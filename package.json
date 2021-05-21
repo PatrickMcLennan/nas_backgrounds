@@ -1,0 +1,27 @@
+{
+  "name": "widescreen_wallpapers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc:watch": "tsc -w",
+    "tsc:build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.0",
+    "tsc": "^2.0.3",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
