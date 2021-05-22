@@ -1,8 +1,25 @@
 import axios, { AxiosResponse } from 'axios';
-import { readFile, readdir } from 'fs/promises';
-import fs from 'fs';
+import fs, { PathLike } from 'fs';
 import path from 'path';
 import https from 'https';
+
+/**
+ * Synology NAS's only support Node.js ~12
+ *
+ * You have to roll your own promise based fs solutions
+ */
+
+function readdir(path: PathLike): Promise<string[]> {
+  return new Promise((res, rej) =>
+    fs.readdir(path, (err, files) => (err ? rej(err) : res(files)))
+  );
+}
+
+function getIgnoreList(filePath: PathLike): Promise<string> {
+  return new Promise((res, rej) =>
+    fs.readFile(filePath, `utf-8`, (err, data) => (err ? rej(err) : res(data)))
+  );
+}
 
 function downloadImage({ title, url }: { title: string; url: string }) {
   return new Promise((res, rej) =>
@@ -26,7 +43,7 @@ Promise.all([
     },
     url: `https://www.reddit.com/r/widescreenwallpaper/new/.json?count=30`,
   }),
-  readFile(path.resolve(__dirname, `ignore-list.txt`), `utf-8`),
+  getIgnoreList(path.resolve(__dirname, `ignore-list.txt`)),
   readdir(path.resolve(__dirname)),
 ])
   .then(
