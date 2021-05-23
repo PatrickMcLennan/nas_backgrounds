@@ -7,4 +7,5 @@ ignore-list.txt
 *.jpeg
 .env
 express/dist/
+express/html/
 .next/
