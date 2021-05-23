@@ -5,3 +5,6 @@ ignore-list.txt
 *.svg 
 *.jpg
 *.jpeg
+.env
+express/dist/
+.next/
