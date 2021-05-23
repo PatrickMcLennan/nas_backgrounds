@@ -25,10 +25,20 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
   "exclude": [
     "node_modules"
   ],
-  "include": ["./widescreen_wallpapers.ts", "./wallpaper_play.ts", "./wallhaven.ts"]
+  "include": [
+    "express/src/server.ts",
+    "./express/scrapers/*.ts"
+  ]
 }
