@@ -1,7 +1,7 @@
 import fs, { PathLike } from 'fs';
 import axios, { AxiosResponse } from 'axios';
 import { parse } from 'node-html-parser';
-import { getIgnoreList, readdir } from 'lib';
+import { downloadImage, getIgnoreList, nameImage, readdir } from 'lib';
 import path from 'path';
 
 Promise.all([
@@ -22,7 +22,17 @@ Promise.all([
   ]) => {
     const resultsHtml = parse(newResults.data);
 
-    const anchorElements = 
+    const imageResults = 
+      Array
+        .from(resultsHtml?.querySelectorAll?.(`[data-download][data-src]`) ?? [], element => ({
+          title: nameImage(element?.getAttribute?.(`data-src`) ?? ``),
+          url: element?.getAttribute?.(`data-download`) ?? ``
+        }))
+        ?.reduce?.((all, { title, url }) => {
+          if (!title.length || !url.length) return all;
+          else return all.set(title, url)
+        }, new Map()) ?? new Map();
+
 
     const currentImages: Map<string, null> =
       currentFiles?.reduce?.((all, current) => {
@@ -39,5 +49,24 @@ Promise.all([
           (all, current) => (current ? all.set(current, null) : all),
           new Map()
         ) ?? new Map();
+
+    if (!imageResults.size || !currentImages.size || !ignoredNames.size)
+      return Promise.reject(`${
+        !imageResults.size
+          ? `\nNo images were returned from the endpoint`
+          : ``
+      }${!ignoredNames.size ? `\nThe ignorelist couldn't be parsed` : ``}${
+        !currentImages.size
+          ? `\nThe current dir contents weren't found`
+          : ``
+      }`);
+    
+    imageResults.forEach((_value, key, imageMap) => {
+      if (ignoredNames.has(key) || currentImages.has(key))
+        return imageMap.delete(key);
+      else return;
+    });
+
+    return Promise.all(Array.from(imageResults, ([title, url]) => downloadImage({ title, url })));
   }
-);
+).catch(err => console.error(err))

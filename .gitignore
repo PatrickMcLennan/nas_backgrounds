@@ -1,5 +1,5 @@
 node_modules/
-widescreen_wallpapers.js
+*.js
 ignore-list.txt
 *.png 
 *.svg 
