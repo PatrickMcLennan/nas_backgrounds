@@ -1,28 +1,46 @@
 import express from 'express';
 import { currentImagesMap, readdir, unlink } from './scrapers/lib';
-// import bodyParser from 'body-parser';
-// import { graphqlExpress } from 'apollo-server-express';
 import path from 'path';
-// import cors from 'cors';
 
 const app = express();
 
-// app.use(express.static(path.resolve(__dirname, `../html`)));
-
-app.get(`/images`, async (req, res) => {
-  console.log(req.params);
-  const allFiles = await readdir(path.resolve(__dirname, `../../`));
-  const map = currentImagesMap(allFiles);
-  const images = Array.from(map, ([current, _null]) => current);
-  return res.send(images);
-});
+app.get(`/images`, (_req, res) =>
+  readdir(path.resolve(__dirname, `../../`))
+    .then((allFiles) => {
+      const map = currentImagesMap(allFiles);
+      const images = Array.from(map, ([current]) => current);
+      return res.send(images);
+    })
+    .catch((err) => res.status(500).send(err))
+);
 
 app.delete(`/image/:title`, (req, res) =>
   unlink(path.resolve(__dirname, `../../${req.params.title}`))
-    .then((res) => console.log(res))
+    .then((images) => res.status(204).send(images))
     .catch((err) => res.status(400).send(err))
 );
 
-app.use(`/`, (req, res) => res.send(`hello?`));
+app.use(`/`, (_req, res) =>
+  res.sendFile(path.resolve(__dirname, `../html/index.html`))
+);
 
-app.listen(3000, () => console.log(`app is running`));
+app.use(`/image/:title`, (req, res) =>
+  readdir(path.resolve(__dirname, `../../`))
+    .then((allFiles) => {
+      const { title } = req.params;
+      const map = currentImagesMap(allFiles);
+      const image = map.get(title);
+      return res
+        .status(image ? 204 : 404)
+        .sendFile(
+          path.resolve(__dirname, image ? `${title}.html` : `404.html`)
+        );
+    })
+    .catch((err) => res.status(500).send(err))
+);
+
+app.get('*', (_req, res) =>
+  res.status(404).sendFile(path.resolve(__dirname, `../html/404.html`))
+);
+
+app.listen(8080, () => console.log(`app is running`));

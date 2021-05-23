@@ -1,0 +1,4 @@
+node_modules/
+express/dist/
+express/html/
+.next/

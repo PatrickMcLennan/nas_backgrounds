@@ -1,5 +1,8 @@
 # nas_backgrounds
 
-I use this script to fetch the latest backgrounds posted on /r/WidescreenWallpaper.  The results are checked against my current images and what's in my ignore-list.txt -- any fetched images that I don't currently have or hasn't been added to the ignore-list are then downloaded.  
+## Scrapers make API calls for new 21:9 wallpapers for via CRON, Next.js builds static HTML with them to be served with Express.js
 
-My Synology NAS only supports Node.js v 12, so JS is written with that in mind.
+To get started:
+  1. `git clone https://www.github.com/patrickmclennan/nas_backgrounds $YOUR_APP`
+  2. `npm install`
+  3. `cd scripts && bash docker-rebuild.sh`
