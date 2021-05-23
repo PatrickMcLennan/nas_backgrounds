@@ -1,7 +1,13 @@
-import fs, { PathLike } from 'fs';
 import axios, { AxiosResponse } from 'axios';
 import { parse } from 'node-html-parser';
-import { downloadImage, getIgnoreList, nameImage, readdir } from 'lib';
+import {
+  downloadImage,
+  getIgnoreList,
+  nameImage,
+  readdir,
+  currentImagesMap,
+  ignoredNamesMap,
+} from './lib';
 import path from 'path';
 
 Promise.all([
@@ -35,21 +41,8 @@ Promise.all([
           else return all.set(title, url);
         }, new Map()) ?? new Map();
 
-      const currentImages: Map<string, null> =
-        currentFiles?.reduce?.((all, current) => {
-          const ext = path.extname(current);
-          return ![`.png`, `.svg`, `.jpg`, `.jpeg`].includes(ext)
-            ? all
-            : all.set(current, null);
-        }, new Map()) ?? new Map();
-
-      const ignoredNames: Map<string, null> =
-        ignoreList
-          ?.split?.(`\n`)
-          ?.reduce?.(
-            (all, current) => (current ? all.set(current, null) : all),
-            new Map()
-          ) ?? new Map();
+      const currentImages = currentImagesMap(currentFiles);
+      const ignoredNames = ignoredNamesMap(ignoreList);
 
       if (!imageResults.size || !currentImages.size || !ignoredNames.size)
         return Promise.reject(
@@ -76,5 +69,10 @@ Promise.all([
         )
       );
     }
+  )
+  .then((newDownloads) =>
+    console.log(
+      `${newDownloads.length} image(s) successfully downloaded from https://wallpaperplay.com/board/ultra-wide-wallpapers#Seemore`
+    )
   )
   .catch((err) => console.error(err));

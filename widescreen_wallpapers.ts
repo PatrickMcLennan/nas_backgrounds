@@ -1,5 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
-import { readdir, getIgnoreList, downloadImage, nameImage } from './lib';
+import {
+  readdir,
+  getIgnoreList,
+  downloadImage,
+  ignoredNamesMap,
+  nameImage,
+  currentImagesMap,
+} from './lib';
 import path from 'path';
 
 Promise.all([
@@ -41,21 +48,8 @@ Promise.all([
             : all.set(`${nameImage(title)}.${ext}` ?? `NULL`, url);
         }, new Map()) ?? new Map();
 
-      const currentImages: Map<string, null> =
-        currentFiles?.reduce?.((all, current) => {
-          const ext = path.extname(current);
-          return ![`.png`, `.svg`, `.jpg`, `.jpeg`].includes(ext)
-            ? all
-            : all.set(current, null);
-        }, new Map()) ?? new Map();
-
-      const ignoredNames: Map<string, null> =
-        ignoreList
-          ?.split?.(`\n`)
-          ?.reduce?.(
-            (all, current) => (current ? all.set(current, null) : all),
-            new Map()
-          ) ?? new Map();
+      const currentImages = currentImagesMap(currentFiles);
+      const ignoredNames = ignoredNamesMap(ignoreList);
 
       if (!wallpapers.size || !ignoredNames.size || !currentImages.size)
         return Promise.reject(
@@ -80,5 +74,10 @@ Promise.all([
         Array.from(wallpapers, ([title, url]) => downloadImage({ title, url }))
       );
     }
+  )
+  .then((newDownloads) =>
+    console.log(
+      `${newDownloads.length} image(s) successfully downloaded from https://www.reddit.com/r/widescreenwallpaper/new/.json?count=30`
+    )
   )
   .catch((err) => console.error(err));

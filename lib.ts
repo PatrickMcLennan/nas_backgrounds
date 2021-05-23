@@ -1,5 +1,6 @@
 import fs, { PathLike } from 'fs';
 import https from 'https';
+import path from 'path';
 
 /**
  * Synology NAS's only support Node.js ~12
@@ -13,9 +14,31 @@ export function readdir(path: PathLike): Promise<string[]> {
   );
 }
 
+export function currentImagesMap(currentFiles: string[]): Map<string, null> {
+  return (
+    currentFiles?.reduce?.((all, current) => {
+      const ext = path.extname(current);
+      return ![`.png`, `.svg`, `.jpg`, `.jpeg`].includes(ext)
+        ? all
+        : all.set(current, null);
+    }, new Map()) ?? new Map()
+  );
+}
+
 export function getIgnoreList(filePath: PathLike): Promise<string> {
   return new Promise((res, rej) =>
     fs.readFile(filePath, `utf-8`, (err, data) => (err ? rej(err) : res(data)))
+  );
+}
+
+export function ignoredNamesMap(ignoreList: string): Map<string, null> {
+  return (
+    ignoreList
+      ?.split?.(`\n`)
+      ?.reduce?.(
+        (all, current) => (current ? all.set(current, null) : all),
+        new Map()
+      ) ?? new Map()
   );
 }
 

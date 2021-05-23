@@ -30,5 +30,5 @@
   "exclude": [
     "node_modules"
   ],
-  "include": ["./widescreen_wallpapers.ts", "./wallpaper_play.ts"]
+  "include": ["./widescreen_wallpapers.ts", "./wallpaper_play.ts", "./wallhaven.ts"]
 }
