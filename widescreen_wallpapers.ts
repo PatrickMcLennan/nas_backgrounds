@@ -1,39 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import fs, { PathLike } from 'fs';
+import { readdir, getIgnoreList, downloadImage, nameImage } from './lib';
 import path from 'path';
-import https from 'https';
-
-/**
- * Synology NAS's only support Node.js ~12
- *
- * You have to roll your own promise based fs solutions
- */
-
-function readdir(path: PathLike): Promise<string[]> {
-  return new Promise((res, rej) =>
-    fs.readdir(path, (err, files) => (err ? rej(err) : res(files)))
-  );
-}
-
-function getIgnoreList(filePath: PathLike): Promise<string> {
-  return new Promise((res, rej) =>
-    fs.readFile(filePath, `utf-8`, (err, data) => (err ? rej(err) : res(data)))
-  );
-}
-
-function downloadImage({ title, url }: { title: string; url: string }) {
-  return new Promise((res, rej) =>
-    https.get(url, (httpRes) => {
-      const stream = fs.createWriteStream(title);
-      httpRes.pipe(stream);
-      stream.on(`finish`, () => {
-        stream.close();
-        return res(`${title} downloaded`);
-      });
-      stream.on(`error`, (err) => rej(err));
-    })
-  );
-}
 
 Promise.all([
   axios({
@@ -71,18 +38,7 @@ Promise.all([
             !ext ||
             ext?.length >= 255
             ? all
-            : all.set(
-                `${title
-                  .toLowerCase()
-                  .replace(/ /g, `-`)
-                  .replace(/\*/g, `-`)
-                  .replace(/\//g, `-`)
-                  .replace(/\[/g, `-`)
-                  .replace(/\]/g, `-`)
-                  .replace(/\|/g, `-`)
-                  .replace(/@/g, `-`)}.${ext}` ?? `NULL`,
-                url
-              );
+            : all.set(`${nameImage(title)}.${ext}` ?? `NULL`, url);
         }, new Map()) ?? new Map();
 
       const currentImages: Map<string, null> =
