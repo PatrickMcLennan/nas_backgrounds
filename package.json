@@ -6,9 +6,9 @@
   "scripts": {
     "tsc:watch": "tsc -w -p tsconfig.server.json",
     "tsc:build": "tsc -p tsconfig.server.json",
-    "next:dev": "next dev",
-    "next:build": "next build",
-    "next:export": "next build && next export -o ./express/html",
+    "next:dev": "NODE_ENV=development next dev",
+    "next:build": "NODE_ENV=production next build",
+    "next:export": "NODE_ENV=production next build && next export -o ./express/html",
     "pm2:prod": "pm2-runtime ./express/dist/server.js"
   },
   "keywords": [],

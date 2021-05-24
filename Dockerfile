@@ -4,10 +4,12 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN nvm install && nvm use
 RUN npm install
-RUN npm run next:export
 RUN npm run tsc:build
+RUN npm run pm2:prod
+RUN npm run next:export
 
 EXPOSE 8080
 
-CMD ["npm", "run", "pm2:prod"]
+# CMD ["npm", "run", "pm2:prod"]

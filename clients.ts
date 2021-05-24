@@ -1,6 +1,7 @@
 import axios from 'axios';
 
+const IS_PROD = process.env.NODE_ENV === `production`;
+
 export const browserClient = axios.create({
-  // baseURL: `http://localhost:49160`,
-  baseURL: `http://localhost:8080`,
+  baseURL: IS_PROD ? `http://localhost:49160/api` : `http://localhost:8080/api`,
 });
