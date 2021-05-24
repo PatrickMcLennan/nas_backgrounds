@@ -46,7 +46,6 @@ Promise.all([
             return { url, title };
           }
         )?.reduce?.((all, { title, url }) => {
-          console.log(title, url);
           if (!url.length || !title.length) return all;
           else return all.set(title, url);
         }, new Map()) ?? new Map();

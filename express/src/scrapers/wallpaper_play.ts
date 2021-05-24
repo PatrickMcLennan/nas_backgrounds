@@ -29,8 +29,6 @@ Promise.all([
     ]) => {
       const resultsHtml = parse(newResults.data);
 
-      console.log(`hello?`);
-
       const imageResults =
         Array.from(
           resultsHtml?.querySelectorAll?.(`[data-download][data-src]`) ?? [],
