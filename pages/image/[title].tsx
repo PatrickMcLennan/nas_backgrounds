@@ -1,46 +1,53 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { AxiosResponse } from 'axios';
+import { InferGetStaticPropsType } from 'next';
 import { browserClient } from '../../clients';
 
-interface Props extends GetStaticProps {
-  params: { image: string };
+type Props = {
+  params: {
+    image: string;
+  };
+};
+
+export default function Title({
+  image,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  return (
+    <>
+      <h1 className="h1">{image}</h1>
+    </>
+  );
 }
 
-export default function Title(image: string) {}
-
-export const getStaticPaths: GetStaticPaths = async () =>
+export const getStaticPaths = async () =>
   browserClient({
     method: `GET`,
     url: `/images`,
   })
-    .then((res) => ({
-      paths: res.data.map((image) => ({
-        params: {
-          image,
-        },
+    .then(({ data }: AxiosResponse<string[]>) => ({
+      paths: data.map((image) => ({
+        params: { image },
       })),
       fallback: false,
     }))
-    .catch((err) => ({
-      paths: {
-        params: {
-          image: `404`,
-        },
-      },
-      fallback: true,
-    }));
+    .catch((err) => {
+      console.error(err);
+      return {
+        paths: [{ params: { image: `404` } }],
+        fallback: false,
+      };
+    });
 
-export const getStaticProps: GetStaticProps = async ({ params }: Props) =>
+export const getStaticProps = async ({ params }: Props) =>
   browserClient({
     method: `GET`,
     url: `/image/${params.image}`,
   })
-    .then((res) => ({
+    .then((res: AxiosResponse<string>) => ({
       props: {
         image: res.data,
       },
     }))
-    .catch((err) => ({
-      props: {
-        image: `404`,
-      },
-    }));
+    .catch((err) => {
+      console.error(err);
+      return { notFound: true };
+    });

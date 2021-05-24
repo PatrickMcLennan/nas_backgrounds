@@ -1,10 +1,16 @@
 import express from 'express';
 import { currentImagesMap, readdir, unlink } from './scrapers/lib';
 import path from 'path';
+import cors from 'cors';
+
+const corsOptions = {
+  origin: `http://localhost:3000`,
+};
 
 const app = express();
+app.use(cors(corsOptions));
 
-app.get(`/images`, (_req, res) =>
+app.get(`/api/images`, (_req, res) =>
   readdir(path.resolve(__dirname, `../../`))
     .then((allFiles) => {
       const map = currentImagesMap(allFiles);
@@ -14,7 +20,7 @@ app.get(`/images`, (_req, res) =>
     .catch((err) => res.status(500).send(err))
 );
 
-app.delete(`/image/:title`, (req, res) =>
+app.delete(`/api/image/:title`, (req, res) =>
   unlink(path.resolve(__dirname, `../../${req.params.title}`))
     .then((images) => res.status(204).send(images))
     .catch((err) => res.status(400).send(err))
