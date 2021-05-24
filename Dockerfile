@@ -4,7 +4,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN nvm install && nvm use
+RUN bash -c ". .nvm/nvm.sh \ 
+            && nvm install && nvm use"
 RUN npm install
 RUN npm run tsc:build
 RUN npm run pm2:prod
