@@ -18,8 +18,8 @@ Promise.all([
     },
     url: `https://wall.alphacoders.com/by_resolution.php?w=3840&h=1600`,
   }),
-  getIgnoreList(path.resolve(__dirname, `ignore-list.txt`)),
-  readdir(path.resolve(__dirname)),
+  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
+  readdir(path.resolve(__dirname, `../../../`)),
 ])
   .then(
     ([pageHtml, ignoreList, currentFiles]: [

@@ -18,8 +18,8 @@ Promise.all([
     },
     url: `https://wallpaperplay.com/board/ultra-wide-wallpapers#Seemore`,
   }),
-  getIgnoreList(path.resolve(__dirname, `ignore-list.txt`)),
-  readdir(path.resolve(__dirname)),
+  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
+  readdir(path.resolve(__dirname, `../../../`)),
 ])
   .then(
     ([newResults, ignoreList, currentFiles]: [

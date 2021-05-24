@@ -17,8 +17,8 @@ Promise.all([
     },
     url: `https://www.reddit.com/r/widescreenwallpaper/new/.json?count=30`,
   }),
-  getIgnoreList(path.resolve(__dirname, `ignore-list.txt`)),
-  readdir(path.resolve(__dirname)),
+  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
+  readdir(path.resolve(__dirname, `../../../`)),
 ])
   .then(
     ([newResults, ignoreList, currentFiles]: [

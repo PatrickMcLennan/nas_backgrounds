@@ -18,8 +18,8 @@ Promise.all([
     },
     url: `https://wallhaven.cc/search?categories=111&purity=100&resolutions=3840x1600&sorting=new&order=desc&page=4`,
   }),
-  getIgnoreList(path.resolve(__dirname, `ignore-list.txt`)),
-  readdir(path.resolve(__dirname)),
+  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
+  readdir(path.resolve(__dirname, `../../../`)),
 ])
   .then(
     ([pageHtml, ignoreList, currentFiles]: [
