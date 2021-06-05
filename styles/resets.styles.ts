@@ -7,14 +7,14 @@ import type {
   FlexDirection,
   FlexWrap,
 } from '../types/style.types';
-import { activeStates, mobile, tablet } from './helper.styles';
+import { activeStates } from './helper.styles';
 
 const IS_PROD = process.env.NODE_ENV === `production`;
 
 const fontUrls = ['Regular', 'Medium', 'SemiBold', `Bold`].reduce(
   (all, current) => ({
     ...all,
-    [current]: `${
+    [current]: `http://${
       IS_PROD ? process.env.PROD_ENV : process.env.DEV_URL
     }/fonts/DancingScript-${current}.ttf`,
   }),

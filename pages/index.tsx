@@ -17,8 +17,8 @@ export default function Index({
 }) {
   const [page, setPage] = useState(1);
 
-  // console.log(images);
-  // console.log(error);
+  console.log(images);
+  console.log(error);
 
   return (
     <Container>

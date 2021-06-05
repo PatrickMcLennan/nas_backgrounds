@@ -4,15 +4,15 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 
-const corsOptions = {
-  origin: `http://localhost:3000`,
-};
+// const corsOptions = {
+//   origin: `http://localhost:3000`,
+// };
 
 const app = express();
 app.use(
   morgan(`:method :url :status :res[content-length] - :response-time ms`)
 );
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.get(`/api/images/:page?`, (req, res) =>
   readdir(path.resolve(__dirname, `../../`))

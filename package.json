@@ -8,7 +8,7 @@
     "tsc:build": "tsc -p tsconfig.server.json",
     "next:dev": "NODE_ENV=development next dev",
     "next:build": "NODE_ENV=production next build",
-    "next:export": "NODE_ENV=production next build && next export -o ./express/html",
+    "next:export": "NODE_ENV=production next build && NODE_ENV=production next export -o ./express/html",
     "pm2:prod": "pm2-runtime ./express/dist/server.js"
   },
   "keywords": [],
