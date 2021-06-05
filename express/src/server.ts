@@ -39,7 +39,7 @@ app.delete(`/api/image/:title`, (req, res) =>
 //   res.sendFile(path.resolve(__dirname, `../html/index.html`))
 // );
 
-app.use(`/image/:title`, (req, res) =>
+app.use(`/api/image/:title`, (req, res) =>
   readdir(path.resolve(__dirname, `../../`))
     .then((allFiles) => {
       const { title } = req.params;
