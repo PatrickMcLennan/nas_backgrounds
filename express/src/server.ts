@@ -40,6 +40,7 @@ app.use(`/api/image/:title`, (req, res) =>
     .then((allFiles) => {
       const { title } = req.params;
       const map = currentImagesMap(allFiles);
+      console.log(map);
       const image = map.get(title);
       return res
         .status(image ? 204 : 404)
