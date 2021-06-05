@@ -17,6 +17,9 @@ export default function Index({
 }) {
   const [page, setPage] = useState(1);
 
+  // console.log(images);
+  // console.log(error);
+
   return (
     <Container>
       {images.length ? (
@@ -45,7 +48,7 @@ export default function Index({
 export async function getStaticProps() {
   return browserClient({
     method: `GET`,
-    url: `/images/1`,
+    url: `/api/images/1`,
   })
     .then((res) => ({
       props: {

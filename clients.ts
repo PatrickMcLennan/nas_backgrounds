@@ -1,8 +1,13 @@
 import axios from 'axios';
+import path from 'path';
+import { config } from 'dotenv';
+
+config({ path: path.resolve(__dirname, `./.env`) });
 
 const IS_PROD = process.env.NODE_ENV === `production`;
 
+console.log(IS_PROD);
+
 export const browserClient = axios.create({
-  // baseURL: IS_PROD ? `http://localhost:49160/api` : `http://localhost:8080/api`,
-  baseURL: `http://localhost:8080/api`,
+  baseURL: IS_PROD ? process.env.PROD_URL : process.env.DEV_URL,
 });

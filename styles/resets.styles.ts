@@ -9,32 +9,47 @@ import type {
 } from '../types/style.types';
 import { activeStates, mobile, tablet } from './helper.styles';
 
+const IS_PROD = process.env.NODE_ENV === `production`;
+
+const fontUrls = ['Regular', 'Medium', 'SemiBold', `Bold`].reduce(
+  (all, current) => ({
+    ...all,
+    [current]: `${
+      IS_PROD ? process.env.PROD_ENV : process.env.DEV_URL
+    }/fonts/DancingScript-${current}.ttf`,
+  }),
+  { Regular: ``, Medium: ``, SemiBold: ``, Bold: `` }
+);
+
 export const GlobalStyles = createGlobalStyle`
 
   @font-face {
     font-family: 'dancing-regular';
-    src: url('http://localhost:8080/fonts/DancingScript-Regular.ttf') format('truetype');
+    src: url('${fontUrls.Regular}') format('truetype');
+    /* src: url('${
+      process.env.PROD_URL
+    }/fonts/DancingScript-Regular.ttf') format('truetype'); */
     font-weight: 100;
     font-style: normal;
   };
 
   @font-face {
     font-family: 'dancing-medium';
-    src: url('http://localhost:8080/fonts/DancingScript-Medium.ttf') format('truetype');
+    src: url('${fontUrls.Medium}') format('truetype');
     font-weight: bold;
     font-style: normal;
   };
 
   @font-face {
     font-family: 'dancing-semibold';
-    src: url('http://localhost:8080/fonts/DancingScript-SemiBold.ttf') format('truetype');
+    src: url('${fontUrls.SemiBold}') format('truetype');
     font-weight: bold;
     font-style: normal;
   };
 
   @font-face {
     font-family: 'dancing-bold';
-    src: url('http://localhost:8080/fonts/DancingScript-Bold.ttf') format('truetype');
+    src: url('${fontUrls.Bold}') format('truetype');
     font-weight: bold;
     font-style: normal;
   };
