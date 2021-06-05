@@ -11,8 +11,9 @@ import { browserClient } from '../clients';
 
 const StyledContainer = styled(Container)`
   .img {
-    min-height: 250px;
+    height: 250px;
     object-fit: cover;
+    width: 100%;
   }
 `;
 
@@ -30,15 +31,14 @@ export default function Index({
 }) {
   const [page, setPage] = useState(1);
 
-  console.log(images);
-  console.log(process.env.DEV_URL);
+  if (error) console.error(error);
 
   return (
     <StyledContainer>
       {images.length ? (
         <Grid container spacing={2}>
           {images.map((image) => (
-            <Grid item key={image}>
+            <Grid item key={image} xs={12} md={6} lg={4}>
               <Card>
                 <img
                   className="img"
