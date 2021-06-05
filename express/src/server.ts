@@ -45,7 +45,7 @@ app.use(`/api/image/:title`, (req, res) =>
       return res
         .status(image ? 204 : 404)
         .sendFile(
-          path.resolve(__dirname, image ? `${title}.html` : `404.html`)
+          path.resolve(__dirname, image ? `../../${title}` : `../html/404.html`)
         );
     })
     .catch((err) => res.status(500).send(err))
