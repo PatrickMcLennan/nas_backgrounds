@@ -8,7 +8,7 @@ type Props = {
   };
 };
 
-export default function Title({
+export default function Image({
   image,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
