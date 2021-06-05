@@ -1,5 +1,6 @@
 import {
   Card,
+  CardActionArea,
   CardMedia,
   Container,
   Grid,
@@ -39,15 +40,16 @@ export default function Index({
         <Grid container spacing={2}>
           {images.map((image) => (
             <Grid item key={image} xs={12} md={6} lg={4}>
-              <Card>
-                <img
-                  className="img"
-                  src={`http://${SRC_URL}/images/${image}`}
-                  alt={image}
-                  loading="lazy"
-                />
-                <CardMedia image={image} title={image} />
-                <Typography variant="h2">{image}</Typography>
+              <Card variant="outlined">
+                <CardActionArea>
+                  <img
+                    className="img"
+                    src={`http://${SRC_URL}/images/${image}`}
+                    alt={image}
+                    loading="lazy"
+                  />
+                  <Typography variant="h2">{image}</Typography>
+                </CardActionArea>
               </Card>
             </Grid>
           ))}
