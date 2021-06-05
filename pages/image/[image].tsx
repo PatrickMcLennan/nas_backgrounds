@@ -40,7 +40,7 @@ export const getStaticPaths = async () =>
 export const getStaticProps = async ({ params }: Props) =>
   browserClient({
     method: `GET`,
-    url: `/images/${params.image}`,
+    url: `/api/images/${params.image}`,
   })
     .then((res: AxiosResponse<string>) => ({
       props: {
