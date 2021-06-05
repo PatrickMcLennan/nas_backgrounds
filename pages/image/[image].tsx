@@ -21,7 +21,7 @@ export default function Image({
 export const getStaticPaths = async () =>
   browserClient({
     method: `GET`,
-    url: `/api/images`,
+    url: `/images`,
   })
     .then(({ data }: AxiosResponse<string[]>) => ({
       paths: data.map((image) => ({
