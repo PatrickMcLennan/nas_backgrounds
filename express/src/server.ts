@@ -35,10 +35,6 @@ app.delete(`/api/image/:title`, (req, res) =>
     .catch((err) => res.status(400).send(err))
 );
 
-// app.use(`/`, (_req, res) =>
-//   res.sendFile(path.resolve(__dirname, `../html/index.html`))
-// );
-
 app.use(`/api/image/:title`, (req, res) =>
   readdir(path.resolve(__dirname, `../../`))
     .then((allFiles) => {
@@ -55,6 +51,7 @@ app.use(`/api/image/:title`, (req, res) =>
 );
 
 app.use(`/fonts`, express.static(path.resolve(__dirname, `../fonts`)));
+app.use(`/images`, express.static(path.resolve(__dirname, `../../`)));
 app.use(express.static(path.resolve(__dirname, `../html`)));
 
 app.listen(8080, () => console.log(`app is running`));

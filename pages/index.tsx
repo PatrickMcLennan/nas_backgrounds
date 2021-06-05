@@ -5,8 +5,21 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
+import styled from 'styled-components';
 import { useState } from 'react';
 import { browserClient } from '../clients';
+
+const StyledContainer = styled(Container)`
+  .img {
+    min-height: 250px;
+    object-fit: cover;
+  }
+`;
+
+const SRC_URL =
+  process.env.NODE_ENV === `development`
+    ? process.env.DEV_URL
+    : process.env.PROD_URL;
 
 export default function Index({
   images,
@@ -18,15 +31,21 @@ export default function Index({
   const [page, setPage] = useState(1);
 
   console.log(images);
-  console.log(error);
+  console.log(process.env.DEV_URL);
 
   return (
-    <Container>
+    <StyledContainer>
       {images.length ? (
         <Grid container spacing={2}>
           {images.map((image) => (
             <Grid item key={image}>
               <Card>
+                <img
+                  className="img"
+                  src={`http://${SRC_URL}/api/image/${image}`}
+                  alt={image}
+                  loading="lazy"
+                />
                 <CardMedia image={image} title={image} />
                 <Typography variant="h2">{image}</Typography>
               </Card>
@@ -41,7 +60,7 @@ export default function Index({
           </Typography>
         </>
       )}
-    </Container>
+    </StyledContainer>
   );
 }
 
