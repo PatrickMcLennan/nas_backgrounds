@@ -42,7 +42,7 @@ export default function Index({
               <Card>
                 <img
                   className="img"
-                  src={`http://${SRC_URL}/api/image/${image}`}
+                  src={`http://${SRC_URL}/images/${image}`}
                   alt={image}
                   loading="lazy"
                 />
