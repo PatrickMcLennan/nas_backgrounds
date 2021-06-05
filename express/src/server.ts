@@ -35,17 +35,16 @@ app.delete(`/api/image/:title`, (req, res) =>
     .catch((err) => res.status(400).send(err))
 );
 
-app.use(`/api/image/:title`, (req, res) =>
+app.get(`/api/image/:title`, (req, res) =>
   readdir(path.resolve(__dirname, `../../`))
     .then((allFiles) => {
       const { title } = req.params;
       const map = currentImagesMap(allFiles);
-      console.log(map);
-      const image = map.get(title);
+      const imageExists = map.has(title);
       return res
-        .status(image ? 204 : 404)
+        .status(imageExists ? 204 : 404)
         .sendFile(
-          path.resolve(__dirname, image ? `../../${title}` : `../html/404.html`)
+          path.resolve(__dirname, title ? `../../${title}` : `../html/404.html`)
         );
     })
     .catch((err) => res.status(500).send(err))
