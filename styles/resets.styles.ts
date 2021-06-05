@@ -1,6 +1,6 @@
+import { createMuiTheme } from '@material-ui/core';
 import { rem } from 'polished';
 import { createGlobalStyle, css } from 'styled-components';
-import reset from 'styled-reset';
 import type {
   CSS,
   FlexAlignment,
@@ -11,28 +11,63 @@ import { activeStates, mobile, tablet } from './helper.styles';
 
 export const GlobalStyles = createGlobalStyle`
 
+  @font-face {
+    font-family: 'dancing-regular';
+    src: url('http://localhost:8080/fonts/DancingScript-Regular.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+  };
+
+  @font-face {
+    font-family: 'dancing-medium';
+    src: url('http://localhost:8080/fonts/DancingScript-Medium.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  };
+
+  @font-face {
+    font-family: 'dancing-semibold';
+    src: url('http://localhost:8080/fonts/DancingScript-SemiBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  };
+
+  @font-face {
+    font-family: 'dancing-bold';
+    src: url('http://localhost:8080/fonts/DancingScript-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  };
+
   :root {
-    --font: Helvetica, sans-serif;
+    --font-regular: 'dancing-regular', Helvetica, sans-serif;
+    --font-medium: 'dancing-medium', Helvetica, sans-serif;
+    --font-bold: 'dancing-bold', Helvetica, sans-serif;
+    --font-semibold: 'dancing-semibold', Helvetica, sans-serif;
     --red: #E50914;
     --red-hover: #7F0000;
     --gray: #757575;
     --transition-fast: .175s ease-in-out;
     --square: 5px;
   }
-  ${reset};
+
+
   *,
   *::before,
   *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: var(--font-regular);
   }
+
   button,
   a,
   input[type="submit"] {
     border: none;
     cursor: pointer;
   }
+
   button,
   a {
     color: inherit;
@@ -41,6 +76,7 @@ export const GlobalStyles = createGlobalStyle`
       color: inherit;
     `)}
   }
+
   input[type="text"], 
   input[type="email"], 
   input[type="password"] {
@@ -50,38 +86,19 @@ export const GlobalStyles = createGlobalStyle`
       border: ${rem(`1px`)} solid var(--red);
     `)}
   }
+
   #__next {
     min-height: 100vh;
     width: 100vw;
     position: relative;
     overflow-x: hidden;
-    display: grid;  
-    grid-template-areas:
-      "header"
-      "main"
-      "footer";
-    grid-template-rows: max-content 1fr max-content;
     color: black;
     font-family: var(----font)
   }
-  
-  ${[`header`, `main`, `footer`].map(
-    (region) => css`
-      .${region} {
-        grid-area: ${region};
-        padding: 0 7.5%;
-        ${tablet(css`
-          padding: 0 3%;
-        `)}
-        ${mobile(css`
-          padding: 0 3%;
-        `)}
-      }
-    `
-  )}
+
 `;
 
-export const theme = {
+export const styledComponentsTheme = {
   flex: (
     jc: FlexAlignment = `center`,
     ai: FlexAlignment = `center`,
@@ -101,3 +118,13 @@ export const theme = {
     transform: translate(-50%, -50%);
   `,
 };
+
+export const materialUiTheme = createMuiTheme({
+  typography: {
+    h1: {
+      fontFamily: `dancing-bold, Helvetica, sans-serif`,
+      fontSize: `70px`,
+    },
+    fontFamily: `dancing-regular, Helvetica, sans-serif`,
+  },
+});

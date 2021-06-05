@@ -1,13 +1,17 @@
+import styled from 'styled-components';
 import Link from 'next/link';
+import { AppBar, Switch, Toolbar, Typography } from '@material-ui/core';
+import { flexin } from '../styles/helper.styles';
 
-export default function Header(): JSX.Element {
+const HeaderStyles = styled(AppBar)``;
+
+export default function Header({ isDark, changeTheme }): JSX.Element {
   return (
-    <header className="header">
-      <nav>
-        <Link href="/">
-          <a className="link">Home</a>
-        </Link>
-      </nav>
-    </header>
+    <HeaderStyles className="header" position="static">
+      <Toolbar variant="dense">
+        <Typography variant="h1">Backgrounds</Typography>
+        <Switch checked={isDark} onChange={changeTheme} />
+      </Toolbar>
+    </HeaderStyles>
   );
 }
