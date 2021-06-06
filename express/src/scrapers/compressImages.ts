@@ -23,6 +23,9 @@ Promise.all([
   .then(([minifiedImageDirs, rawImages]) => {
     const rawMap = currentImagesMap(rawImages);
 
+    console.log(minifiedImageDirs);
+    console.log(rawImages);
+
     rawMap.forEach((_value, key, srcMap) => {
       if (minifiedImageDirs.includes(key)) srcMap.delete(key);
       else return;
