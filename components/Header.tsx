@@ -8,10 +8,8 @@ const HeaderStyles = styled(AppBar)``;
 export default function Header({ isDark, changeTheme }): JSX.Element {
   return (
     <HeaderStyles className="header" position="static">
-      <Toolbar variant="dense">
-        <Typography variant="h1">Backgrounds</Typography>
-        <Switch checked={isDark} onChange={changeTheme} />
-      </Toolbar>
+      <Typography variant="h1">Backgrounds</Typography>
+      <Switch checked={isDark} onChange={changeTheme} />
     </HeaderStyles>
   );
 }

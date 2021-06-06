@@ -81,11 +81,23 @@ export function nameImage(ogName: string): string {
     .trim()
     .toLowerCase()
     .replace(/ /g, `-`)
+    .replace(/~/g, `-`)
+    .replace(/_/g, `-`)
     .replace(/\*/g, `-`)
     .replace(/%/g, `-`)
     .replace(/\//g, `-`)
     .replace(/\[/g, `-`)
     .replace(/\]/g, `-`)
     .replace(/\|/g, `-`)
+    .replace(/\(/g, `-`)
+    .replace(/\)/g, `-`)
     .replace(/@/g, `-`);
+}
+
+export function rename(file: string): Promise<string> {
+  return new Promise((res, rej) =>
+    fs.rename(file, nameImage(file), (err) =>
+      err ? rej(err) : res(`${file} was renamed to ${nameImage(file)}`)
+    )
+  );
 }

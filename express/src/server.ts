@@ -54,7 +54,12 @@ app.get(`/api/image/:title`, (req, res) =>
 );
 
 app.use(`/fonts`, express.static(path.resolve(__dirname, `../fonts`)));
-app.use(`/images`, express.static(path.resolve(__dirname, `../../`)));
+app.use(
+  `/images`,
+  express.static(path.resolve(__dirname, `../../`), {
+    extensions: [`html`],
+  })
+);
 app.use(express.static(path.resolve(__dirname, `../html`)));
 
 app.listen(8080, () => console.log(`app is running`));

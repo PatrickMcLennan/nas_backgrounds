@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { InferGetStaticPropsType } from 'next';
 import { browserClient } from '../../clients';
+import DocumentHead from '../../components/Head';
 
 type Props = {
   params: {
@@ -13,7 +14,9 @@ export default function Image({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
+      <DocumentHead title={image} description={`View ${image}`} image={image} />
       <h1 className="h1">{image}</h1>
+      <img src={image} alt={image} />
     </>
   );
 }
@@ -40,7 +43,7 @@ export const getStaticPaths = async () =>
 export const getStaticProps = async ({ params }: Props) =>
   browserClient({
     method: `GET`,
-    url: `/api/image/${params.image}`,
+    url: `/images/${params.image}`,
   })
     .then((res: AxiosResponse<string>) => ({
       props: {
