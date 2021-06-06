@@ -4,13 +4,13 @@ import imageminMozjpeg from 'imagemin-mozjpeg';
 import imageminPngquant from 'imagemin-pngquant';
 import path from 'path';
 
-function jpegQuality(size): number {
+function jpegQuality(size: 'string'): number {
   if (size === `small`) return 50;
   if (size === `medium`) return 75;
   if (size === `large`) return 100;
 }
 
-function pngQuality(size): [number, number] {
+function pngQuality(size: 'string'): [number, number] {
   if (size === `small`) return [0.5, 0.6];
   if (size === `medium`) return [0.7, 0.8];
   if (size === `large`) return [0.9, 1];
