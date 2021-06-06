@@ -21,40 +21,50 @@ const fontUrls = ['Regular', 'Medium', 'SemiBold', `Bold`].reduce(
   { Regular: ``, Medium: ``, SemiBold: ``, Bold: `` }
 );
 
+const fontUrl = `http://${
+  IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
+}/fonts`;
+
 export const GlobalStyles = createGlobalStyle`
 
-  @font-face {
-    font-family: 'dancing-regular';
-    src: url('${fontUrls.Regular}') format('truetype');
+@font-face {
+    font-family: 'gotham-book';
+    src: url('${fontUrl}/gotham_book-webfont.eot');
+    src: url('${fontUrl}/gotham_book-webfont.eot?#iefix') format('embedded-opentype'),
+        url('${fontUrl}/gotham_book-webfont.woff2') format('woff2'),
+        url('${fontUrl}/gotham_book-webfont.woff') format('woff'),
+        url('${fontUrl}/gotham_book-webfont.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
-  };
+}
 
-  @font-face {
-    font-family: 'dancing-medium';
-    src: url('${fontUrls.Medium}') format('truetype');
+@font-face {
+    font-family: 'gotham-medium';
+    src: url('${fontUrl}/gotham-medium-webfont.eot');
+    src: url('${fontUrl}/gotham-medium-webfont.eot?#iefix') format('embedded-opentype'),
+        url('${fontUrl}/gotham-medium-webfont.woff2') format('woff2'),
+        url('${fontUrl}/gotham-medium-webfont.woff') format('woff'),
+        url('${fontUrl}/gotham-medium-webfont.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
-  };
+}
 
-  @font-face {
-    font-family: 'dancing-semibold';
-    src: url('${fontUrls.SemiBold}') format('truetype');
+@font-face {
+    font-family: 'gotham-bold';
+    src: url('${fontUrl}/gotham-bold-webfont.eot');
+    src: url('${fontUrl}/gotham-bold-webfont.eot?#iefix') format('embedded-opentype'),
+        url('${fontUrl}/gotham-bold-webfont.woff2') format('woff2'),
+        url('${fontUrl}/gotham-bold-webfont.woff') format('woff'),
+        url('${fontUrl}/gotham-bold-webfont.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
-  };
-
-  @font-face {
-    font-family: 'dancing-bold';
-    src: url('${fontUrls.Bold}') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-  };
+}
 
   :root {
-    --font-regular: 'dancing-regular', Helvetica, sans-serif;
-    --font-medium: 'dancing-medium', Helvetica, sans-serif;
-    --font-bold: 'dancing-bold', Helvetica, sans-serif;
+    // Gotham
+    --gotham: 'gotham-book', sans-serif;
+    --gotham-medium: 'gotham-medium', sans-serif;
+    --gotham-bold: 'gotham-bold', sans-serif;
     --font-semibold: 'dancing-semibold', Helvetica, sans-serif;
     --red: #E50914;
     --red-hover: #7F0000;
@@ -105,7 +115,9 @@ export const GlobalStyles = createGlobalStyle`
     position: relative;
     overflow-x: hidden;
     color: black;
-    font-family: var(----font)
+    font-family: var(----font);
+    display: grid;
+    grid-template-rows: max-content 1fr max-content;
   }
 
 `;
@@ -131,12 +143,4 @@ export const styledComponentsTheme = {
   `,
 };
 
-export const materialUiTheme = createMuiTheme({
-  typography: {
-    h1: {
-      fontFamily: `dancing-bold, Helvetica, sans-serif`,
-      fontSize: `70px`,
-    },
-    fontFamily: `dancing-regular, Helvetica, sans-serif`,
-  },
-});
+export const materialUiTheme = createMuiTheme({});

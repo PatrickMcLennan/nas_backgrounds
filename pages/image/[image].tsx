@@ -1,3 +1,5 @@
+import { Card } from '@material-ui/core';
+import styled from 'styled-components';
 import { AxiosResponse } from 'axios';
 import { InferGetStaticPropsType } from 'next';
 import { browserClient } from '../../clients';
@@ -9,14 +11,34 @@ type Props = {
   };
 };
 
+const IS_PROD = process.env.NODE_ENV === `production`;
+
+const CardStyles = styled(Card)`
+  /* height: 80vh; */
+  width: 100%;
+
+  img {
+    height: 50%;
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
 export default function Image({
   image,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <DocumentHead title={image} description={`View ${image}`} image={image} />
-      <h1 className="h1">{image}</h1>
-      <img src={image} alt={image} />
+      <CardStyles variant="outlined" className="card">
+        <img
+          src={`http://${
+            IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
+          }/images/${image}`}
+          alt={image}
+        />
+        <h1 className="h1">{image}</h1>
+      </CardStyles>
     </>
   );
 }
@@ -40,17 +62,6 @@ export const getStaticPaths = async () =>
       };
     });
 
-export const getStaticProps = async ({ params }: Props) =>
-  browserClient({
-    method: `GET`,
-    url: `/images/${params.image}`,
-  })
-    .then((res: AxiosResponse<string>) => ({
-      props: {
-        image: res.data,
-      },
-    }))
-    .catch((err) => {
-      console.error(err);
-      return { notFound: true };
-    });
+export const getStaticProps = ({ params }: Props) => ({
+  props: { image: params.image },
+});

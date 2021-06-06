@@ -6,15 +6,11 @@
 
 current_path=$PWD
 
-echo $current_path
+cd /var/services/homes/patrick/Backgrounds/express/dist/scrapers
 
-cd /var/services/homes/patrick/Backgrounds
-
-echo $PWD
-
-node ./express/dist/scrapers/alphacoders.js
-node ./express/dist/scrapers/wallhaven.js
-node ./express/dist/scrapers/wallpaper_play.js
-node ./express/dist/scrapers/widescreen_wallpaper.js
+node ./alphacoders.js
+node ./wallhaven.js
+node ./wallpaper_play.js
+node ./widescreen_wallpaper.js
 
 cd $current_path
