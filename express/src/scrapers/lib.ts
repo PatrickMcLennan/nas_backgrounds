@@ -94,6 +94,10 @@ export function nameImage(ogName: string): string {
     .replace(/™/g, `-`)
     .replace(//g, `-`)
     .replace(/𒌋/g, `-`)
+    .replace(/"/g, `-`)
+    .replace(/:/g, `-`)
+    .replace(/;/g, `-`)
+    .replace(/'/g, `-`)
     .replace(/@/g, `-`);
 }
 
