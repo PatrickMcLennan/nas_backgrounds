@@ -8,4 +8,5 @@ ignore-list.txt
 .env
 express/dist/
 express/html/
+express/images/
 .next/
