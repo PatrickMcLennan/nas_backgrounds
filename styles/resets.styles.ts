@@ -15,7 +15,7 @@ const fontUrls = ['Regular', 'Medium', 'SemiBold', `Bold`].reduce(
   (all, current) => ({
     ...all,
     [current]: `http://${
-      IS_PROD ? process.env.PROD_ENV : process.env.DEV_URL
+      IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
     }/fonts/DancingScript-${current}.ttf`,
   }),
   { Regular: ``, Medium: ``, SemiBold: ``, Bold: `` }
@@ -26,9 +26,6 @@ export const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: 'dancing-regular';
     src: url('${fontUrls.Regular}') format('truetype');
-    /* src: url('${
-      process.env.PROD_URL
-    }/fonts/DancingScript-Regular.ttf') format('truetype'); */
     font-weight: 100;
     font-style: normal;
   };
