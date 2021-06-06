@@ -8,7 +8,7 @@ current_path=$PWD
 
 echo $current_path
 
-cd ~/
+cd ~
 
 node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/alphacoders.js
 node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/wallhaven.js
