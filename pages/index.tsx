@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { browserClient } from '../clients';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
+import BreadCrumbs from '../components/BreadCrumbs';
 
 const StyledContainer = styled(Container)`
   .img {
@@ -42,11 +43,12 @@ export default function Index({
         title="Backgrounds"
         description="A GUI to review all scraped Backgrounds"
       />
+      <BreadCrumbs />
       <StyledContainer>
         {images.length ? (
           <Grid container spacing={2}>
             {images.map((image) => (
-              <Grid item key={image} xs={12} md={6} lg={4}>
+              <Grid item key={image} xs={12} sm={6} md={4} lg={4}>
                 <Card variant="outlined">
                   <CardActionArea
                     aria-label={`View ${image}`}
@@ -59,7 +61,9 @@ export default function Index({
                       alt={image}
                       loading="lazy"
                     />
-                    <Typography variant="h2">{image}</Typography>
+                    <Typography variant="h2" noWrap>
+                      {image}
+                    </Typography>
                   </CardActionArea>
                 </Card>
               </Grid>

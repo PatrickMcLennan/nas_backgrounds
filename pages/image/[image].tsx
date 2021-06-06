@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { InferGetStaticPropsType } from 'next';
 import { browserClient } from '../../clients';
 import DocumentHead from '../../components/Head';
+import BreadCrumbs from '../../components/BreadCrumbs';
 
 type Props = {
   params: {
@@ -30,6 +31,7 @@ export default function Image({
   return (
     <>
       <DocumentHead title={image} description={`View ${image}`} image={image} />
+      <BreadCrumbs />
       <CardStyles variant="outlined" className="card">
         <img
           src={`http://${

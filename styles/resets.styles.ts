@@ -11,16 +11,6 @@ import { activeStates } from './helper.styles';
 
 const IS_PROD = process.env.NODE_ENV === `production`;
 
-const fontUrls = ['Regular', 'Medium', 'SemiBold', `Bold`].reduce(
-  (all, current) => ({
-    ...all,
-    [current]: `http://${
-      IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
-    }/fonts/DancingScript-${current}.ttf`,
-  }),
-  { Regular: ``, Medium: ``, SemiBold: ``, Bold: `` }
-);
-
 const fontUrl = `http://${
   IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
 }/fonts`;
@@ -115,7 +105,7 @@ export const GlobalStyles = createGlobalStyle`
     position: relative;
     overflow-x: hidden;
     color: black;
-    font-family: var(----font);
+    font-family: var(--gotham);
     display: grid;
     grid-template-rows: max-content 1fr max-content;
   }
@@ -143,4 +133,8 @@ export const styledComponentsTheme = {
   `,
 };
 
-export const materialUiTheme = createMuiTheme({});
+export const materialUiTheme = createMuiTheme({
+  typography: {
+    fontFamily: [`gotham`, `sans-serif`],
+  },
+});
