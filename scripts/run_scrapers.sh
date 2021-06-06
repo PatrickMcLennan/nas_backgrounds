@@ -4,7 +4,9 @@
   # Run all scrapers
 #
 
-current_path=$(pwd)
+current_path=$PWD
+
+echo $current_path
 
 cd ~/
 
@@ -13,4 +15,4 @@ node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/wallhaven.js
 node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/wallpaper_play.js
 node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/widescreen_wallpaper.js
 
-cd current_path
+cd $current_path
