@@ -115,7 +115,7 @@ export function makeDir(dirPath: PathLike): Promise<PathLike> {
   );
 }
 
-export function makeFile(filePath: PathLike, data: string): Promise<PathLike> {
+export function makeFile(filePath: PathLike, data: Buffer): Promise<PathLike> {
   return new Promise((res, rej) =>
     fs.writeFile(filePath, data, (err) => (err ? rej(err) : res(filePath)))
   );

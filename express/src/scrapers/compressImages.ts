@@ -32,7 +32,7 @@ Promise.all([
     return Promise.all(
       Array.from(rawMap, ([imageName]) =>
         makeDir(path.resolve(__dirname, `../../images/${imageName}`))
-          .then((newPath) => Promise.resolve({ newPath, imageName }))
+          .then((newPath) => ({ newPath, imageName }))
           .catch((error) =>
             Promise.reject({
               error,
@@ -45,40 +45,41 @@ Promise.all([
   .then((dirPaths) =>
     Promise.all(
       dirPaths.reduce(
-        (all: Promise<PathLike>[], { newPath, imageName }) =>
-          all.concat(
-            [`small`, `medium`, `large`].map((size) =>
-              new Promise(() =>
-                imagemin([path.resolve(__dirname, `../../../${imageName}`)], {
-                  plugins: [
-                    imageminMozjpeg({
-                      quality: jpegQuality(size),
-                    }),
-                    imageminPngquant({
-                      quality: pngQuality(size),
-                    }),
-                  ],
+        (
+          all: Promise<PathLike>[],
+          { newPath, imageName }
+        ): Promise<PathLike>[] => [
+          ...all,
+          ...[`small`, `medium`, `large`].map((size) =>
+            imagemin([path.resolve(__dirname, `../../../${imageName}`)], {
+              plugins: [
+                imageminMozjpeg({
+                  quality: jpegQuality(size),
+                }),
+                imageminPngquant({
+                  quality: pngQuality(size),
+                }),
+              ],
+            })
+              .then((imageData) => {
+                if (!imageData || !imageData?.[0]) {
+                  console.error(`Error: no processedImg for ${imageData}`);
+                  return;
+                }
+
+                return makeFile(
+                  `${newPath}/${size}-${imageName}`,
+                  imageData?.[0]?.data
+                );
+              })
+              .catch((error) =>
+                Promise.reject({
+                  error,
+                  message: `${imageName} could not be minified`,
                 })
               )
-                .then((imageData) => {
-                  if (!imageData || !imageData?.[0]) {
-                    console.error(`Error: no processedImg for ${imageData}`);
-                    return;
-                  }
-
-                  return makeFile(
-                    `${newPath}/${size}-${imageName}`,
-                    imageData?.[0]?.data
-                  );
-                })
-                .catch((error) =>
-                  Promise.reject({
-                    error,
-                    message: `${imageName} could not be minified`,
-                  })
-                )
-            )
           ),
+        ],
         []
       )
     ).catch((error) =>
