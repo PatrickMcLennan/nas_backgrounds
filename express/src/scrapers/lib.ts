@@ -108,3 +108,9 @@ export function rename(file: string): Promise<string> {
     )
   );
 }
+
+export function makeDir(dirPath: PathLike): Promise<PathLike> {
+  return new Promise((res, rej) =>
+    fs.mkdir(dirPath, (err) => (err ? rej(err) : res(dirPath)))
+  );
+}
