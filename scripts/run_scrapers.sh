@@ -4,7 +4,7 @@
   # Run all scrapers
 #
 
-node express/dist/scrapers/alphacoders.js
-node express/dist/scrapers/wallhaven.js
-node express/dist/scrapers/wallpaper_play.js
-node express/dist/scrapers/widescreen_wallpaper.js
+node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/alphacoders.js
+node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/wallhaven.js
+node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/wallpaper_play.js
+node ~/var/services/homes/patrick/Backgrounds/express/dist/scrapers/widescreen_wallpaper.js
