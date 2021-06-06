@@ -12,9 +12,9 @@ function jpegQuality(size: string): number {
 }
 
 function pngQuality(size: string): [number, number] {
-  if (size === `small`) return [0.5, 0.6];
-  if (size === `medium`) return [0.7, 0.8];
-  if (size === `large`) return [0.9, 1];
+  if (size === `small`) return [0.3, 0.5];
+  if (size === `medium`) return [0.6, 0.8];
+  if (size === `large`) return [0.8, 1];
 }
 
 Promise.all([
