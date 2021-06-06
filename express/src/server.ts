@@ -41,6 +41,9 @@ app.get(`/api/image/:title`, (req, res) =>
       const { title } = req.params;
       const map = currentImagesMap(allFiles);
       const imageExists = map.has(title);
+      /**
+       * RETURN HERE
+       */
       return res
         .status(imageExists ? 204 : 404)
         .sendFile(

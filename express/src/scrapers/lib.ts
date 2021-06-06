@@ -78,9 +78,11 @@ export function downloadImage({
 
 export function nameImage(ogName: string): string {
   return ogName
+    .trim()
     .toLowerCase()
     .replace(/ /g, `-`)
     .replace(/\*/g, `-`)
+    .replace(/%/g, `-`)
     .replace(/\//g, `-`)
     .replace(/\[/g, `-`)
     .replace(/\]/g, `-`)
