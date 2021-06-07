@@ -94,5 +94,5 @@ Promise.all([
     )
   )
   .catch(({ error, message }) =>
-    console.error(`${message ? message : ``}\n\n${error}`)
+    console.error(`${message ? message : ``}\n\n${JSON.parse(error)}`)
   );
