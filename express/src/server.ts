@@ -74,7 +74,7 @@ app.get(`/api/image/compressed/:title/:size`, (req, res) => {
   console.log(image);
 
   return res
-    .status(image ? 204 : 404)
+    .status(image ? 200 : 404)
     .sendFile(
       image
         ? path.resolve(imagePath)
