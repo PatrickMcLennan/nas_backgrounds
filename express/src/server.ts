@@ -70,9 +70,6 @@ app.get(`/api/image/compressed/:title/:size`, (req, res) => {
 
   const image = fs.existsSync(imagePath);
 
-  console.log(imagePath);
-  console.log(image);
-
   return res
     .status(image ? 200 : 404)
     .sendFile(

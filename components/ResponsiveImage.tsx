@@ -1,4 +1,4 @@
-import { useImage } from 'react-image';
+import { motion } from 'framer-motion';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useState } from 'react';
 
@@ -19,8 +19,8 @@ export default function ResponsiveImage({ name, height }: Props) {
   // if (error) console.error(error);
 
   return (
-    <>
-      {loading && <Skeleton height={height} animation="wave" />}
+    <div style={{ height }}>
+      {loading && <Skeleton height={loading ? 0 : height} animation="wave" />}
       <picture>
         {[
           { size: `small`, breakpoint: 676 },
@@ -33,8 +33,18 @@ export default function ResponsiveImage({ name, height }: Props) {
             media={`(min-width:${breakpoint}px)`}
           />
         ))}
-        <img className="img" alt={name} onLoad={() => setLoaded(false)} />
+        <motion.img
+          className="img"
+          src={getUrl(`small`)}
+          alt={name}
+          onLoad={() => setLoaded(false)}
+          style={{
+            height: `${height}px`,
+            opacity: 0,
+          }}
+          animate={{ opacity: loading ? 0 : 1, height: loading ? 0 : height }}
+        />
       </picture>
-    </>
+    </div>
   );
 }

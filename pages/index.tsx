@@ -15,16 +15,10 @@ import ResponsiveImage from '../components/ResponsiveImage';
 
 const StyledContainer = styled(Container)`
   .img {
-    height: 250px;
     object-fit: cover;
     width: 100%;
   }
 `;
-
-const SRC_URL =
-  process.env.NODE_ENV === `development`
-    ? process.env.DEV_URL
-    : process.env.PROD_URL;
 
 export default function Index({
   images,
