@@ -11,6 +11,7 @@ import { browserClient } from '../clients';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
 import BreadCrumbs from '../components/BreadCrumbs';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 const StyledContainer = styled(Container)`
   .img {
@@ -55,6 +56,7 @@ export default function Index({
                     onClick={() => router.push(`/image/${image}`)}
                     title={`View ${image}`}
                   >
+                    <ResponsiveImage name={image} height={250} />
                     <img
                       className="img"
                       src={`http://${SRC_URL}/images/${image}`}

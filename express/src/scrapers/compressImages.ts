@@ -9,12 +9,14 @@ function jpegQuality(size: string): number {
   if (size === `small`) return 50;
   if (size === `medium`) return 75;
   if (size === `large`) return 100;
+  else return 100;
 }
 
 function pngQuality(size: string): [number, number] {
   if (size === `small`) return [0.3, 0.5];
   if (size === `medium`) return [0.6, 0.8];
   if (size === `large`) return [0.8, 1];
+  else return [0.8, 1];
 }
 
 Promise.all([
@@ -46,9 +48,9 @@ Promise.all([
     Promise.all(
       dirPaths.reduce(
         (
-          all: Promise<PathLike>[],
+          all: Promise<PathLike | undefined>[],
           { newPath, imageName }
-        ): Promise<PathLike>[] => [
+        ): Promise<PathLike | undefined>[] => [
           ...all,
           ...[`small`, `medium`, `large`].map((size) =>
             imagemin([path.resolve(__dirname, `../../../${imageName}`)], {

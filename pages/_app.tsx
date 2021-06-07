@@ -1,6 +1,7 @@
 import { ThemeProvider as StyledComponentsTheme } from 'styled-components';
 import { ThemeProvider as MaterialUiTheme } from '@material-ui/core/styles';
 import { createMuiTheme, PaletteType } from '@material-ui/core';
+import { SkeletonTheme } from "react-loading-skeleton";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -47,11 +48,13 @@ export default function App({ Component, pageProps }): JSX.Element {
             }),
           }}
         >
-          <Header isDark={isDark} changeTheme={changeTheme} />
-          <main className="main">
-            <Component {...pageProps} />
-          </main>
-          <Footer />
+          <SkeletonTheme color="#202020" highlightColor="#444">
+            <Header isDark={isDark} changeTheme={changeTheme} />
+            <main className="main">
+              <Component {...pageProps} />
+            </main>
+            <Footer />
+          </SkeletonTheme>
         </MaterialUiTheme>
       </StyledComponentsTheme>
     </>

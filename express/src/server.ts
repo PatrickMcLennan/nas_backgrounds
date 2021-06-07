@@ -1,6 +1,7 @@
 import express from 'express';
 import { currentImagesMap, readdir, unlink } from './scrapers/lib';
 import path from 'path';
+import fs from 'fs';
 import cors from 'cors';
 import morgan from 'morgan';
 
@@ -52,6 +53,27 @@ app.get(`/api/image/:title`, (req, res) =>
     })
     .catch((err) => res.status(500).send(err))
 );
+
+app.get(`/api/image/compressed/:title/:size`, (req, res) => {
+  const { title, size } = req.params;
+  if (!title || !size)
+    return res
+      .status(422)
+      .send(
+        `A valid image title and size must be added as params.Ex: \n/api/image/compressed/:title/:size\ntitle: ${title}\nsize: ${size} `
+      );
+
+  const imagePath = path.resolve(
+    __dirname,
+    `../images/${title}/${size}-${title}`
+  );
+
+  const image = fs.existsSync(imagePath);
+
+  return res
+    .status(image ? 204 : 404)
+    .sendFile(image ? imagePath : path.resolve(__dirname, `../html/404.html`));
+});
 
 app.use(`/fonts`, express.static(path.resolve(__dirname, `../fonts`)));
 app.use(
