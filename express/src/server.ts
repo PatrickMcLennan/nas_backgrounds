@@ -75,7 +75,11 @@ app.get(`/api/image/compressed/:title/:size`, (req, res) => {
 
   return res
     .status(image ? 204 : 404)
-    .sendFile(image ? imagePath : path.resolve(__dirname, `../html/404.html`));
+    .sendFile(
+      image
+        ? path.resolve(imagePath)
+        : path.resolve(__dirname, `../html/404.html`)
+    );
 });
 
 app.use(`/fonts`, express.static(path.resolve(__dirname, `../fonts`)));
