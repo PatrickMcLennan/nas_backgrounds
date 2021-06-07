@@ -57,12 +57,6 @@ export default function Index({
                     title={`View ${image}`}
                   >
                     <ResponsiveImage name={image} height={250} />
-                    <img
-                      className="img"
-                      src={`http://${SRC_URL}/images/${image}`}
-                      alt={image}
-                      loading="lazy"
-                    />
                     <Typography variant="h2" noWrap>
                       {image}
                     </Typography>
