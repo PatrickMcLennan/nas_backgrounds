@@ -16,7 +16,7 @@ export default function ResponsiveImage({ name, height }: Props) {
       IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
     }/api/image/compressed/${name}/${size}`;
 
-  // if (error) console.error(error);
+  console.log(process.env.PROD_URL);
 
   return (
     <div style={{ height }}>
