@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardActionArea,
   Container,
@@ -14,6 +15,10 @@ import BreadCrumbs from '../components/BreadCrumbs';
 import ResponsiveImage from '../components/ResponsiveImage';
 
 const StyledContainer = styled(Container)`
+  .h2 {
+    font-size: 30px;
+  }
+
   .img {
     object-fit: cover;
     width: 100%;
@@ -51,9 +56,11 @@ export default function Index({
                     title={`View ${image}`}
                   >
                     <ResponsiveImage name={image} height={250} />
-                    <Typography variant="h2" noWrap>
-                      {image}
-                    </Typography>
+                    <Box component="figcaption" p={2}>
+                      <Typography className="h2" variant="h2" noWrap>
+                        {image}
+                      </Typography>
+                    </Box>
                   </CardActionArea>
                 </Card>
               </Grid>

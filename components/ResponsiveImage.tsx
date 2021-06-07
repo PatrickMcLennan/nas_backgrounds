@@ -16,8 +16,6 @@ export default function ResponsiveImage({ name, height }: Props) {
       IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
     }/api/image/compressed/${name}/${size}`;
 
-  console.log(process.env.PROD_URL);
-
   return (
     <div style={{ height }}>
       {loading && <Skeleton height={loading ? 0 : height} animation="wave" />}
@@ -30,14 +28,15 @@ export default function ResponsiveImage({ name, height }: Props) {
           <source
             key={size}
             srcSet={getUrl(size)}
-            media={`(min-width:${breakpoint}px)`}
+            media={`(max-width:${breakpoint}px)`}
           />
         ))}
         <motion.img
           className="img"
+          onLoad={() => setLoaded(false)}
           src={getUrl(`small`)}
           alt={name}
-          onLoad={() => setLoaded(false)}
+          onError={(e) => console.error(e)}
           style={{
             height: `${height}px`,
             opacity: 0,

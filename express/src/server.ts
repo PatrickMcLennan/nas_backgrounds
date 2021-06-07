@@ -46,7 +46,7 @@ app.get(`/api/image/:title`, (req, res) =>
        * RETURN HERE
        */
       return res
-        .status(imageExists ? 204 : 404)
+        .status(imageExists ? 200 : 404)
         .sendFile(
           path.resolve(__dirname, title ? `../../${title}` : `../html/404.html`)
         );
