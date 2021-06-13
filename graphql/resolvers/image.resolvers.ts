@@ -8,7 +8,7 @@ export const imageResolvers = {
   getImages: (_: any, { page }: { page: number }) =>
     readdir(path.join(process.env.IMAGES_DIR ?? ``)).then((allFiles) => {
       const map = currentImagesMap(allFiles);
-      const images = Array.from(map, ([current]) => current);
+      const images = Array.from(map, ([current]) => ({ name: current }));
       return images.slice((page - 1) * 20, page * 20);
     }),
 };

@@ -82,7 +82,7 @@ export async function getStaticProps() {
   })
     .then((res) => ({
       props: {
-        images: res.data,
+        images: res.data?.map?.(({ name }: { name: string }) => name),
         error: null,
       },
     }))
