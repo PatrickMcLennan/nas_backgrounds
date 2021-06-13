@@ -7,11 +7,12 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core';
-import { browserClient } from '../clients';
+import { browserClient, nodeGraphQl } from '../clients';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { useState } from 'react';
+import { gql } from 'graphql-request';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -23,7 +24,7 @@ export default function Index({
   images,
   error,
 }: {
-  images: string[];
+  images: { name: string }[];
   error: Error;
 }) {
   const classes = useStyles();
@@ -40,22 +41,22 @@ export default function Index({
       />
       {images.length ? (
         <Grid container spacing={1}>
-          {images.map((image) => (
-            <Grid item key={image} xs={12} sm={6} md={4}>
+          {images.map(({ name }: { name: string }) => (
+            <Grid item key={name} xs={12} sm={6} md={4}>
               <Card variant="outlined">
                 <CardActionArea
-                  aria-label={`View ${image}`}
-                  onClick={() => router.push(`/image/${image}`)}
-                  title={`View ${image}`}
+                  aria-label={`View ${name}`}
+                  onClick={() => router.push(`/image/${name}`)}
+                  title={`View ${name}`}
                 >
                   <ResponsiveImage
                     className={classes.img}
-                    name={image}
+                    name={name}
                     height={250}
                   />
                   <Box component="figcaption" p={1}>
                     <Typography variant="caption" noWrap>
-                      {image}
+                      {name}
                     </Typography>
                   </Box>
                 </CardActionArea>
@@ -75,14 +76,23 @@ export default function Index({
   );
 }
 
-export async function getStaticProps() {
-  return browserClient({
-    method: `GET`,
-    url: `/api/images/1`,
-  })
+export const getStaticProps = async () =>
+  nodeGraphQl
+    .request(
+      gql`
+        query getImages($page: Int!) {
+          getImages(page: $page) {
+            name
+          }
+        }
+      `,
+      {
+        page: 1,
+      }
+    )
     .then((res) => ({
       props: {
-        images: res.data?.map?.(({ name }: { name: string }) => name),
+        images: res.getImages,
         error: null,
       },
     }))
@@ -92,4 +102,3 @@ export async function getStaticProps() {
         error: JSON.parse(JSON.stringify(error)),
       },
     }));
-}

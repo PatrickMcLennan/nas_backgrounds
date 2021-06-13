@@ -39,4 +39,9 @@
     "./clients.ts",
     "./constants.ts"
   ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

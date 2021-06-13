@@ -8,15 +8,27 @@ import path from 'path';
  * You have to roll your own promise based fs solutions
  */
 
-export function readdir(path: PathLike): Promise<string[]> {
+export function readdir(path: PathLike): Promise<PathLike[]> {
   return new Promise((res, rej) =>
-    fs.readdir(path, (err, files) => (err ? rej(err) : res(files)))
+    fs.readdir(path, (err, files) =>
+      err
+        ? rej(err)
+        : res(
+            files
+              .map((file) => ({
+                name: file,
+                time: fs.statSync(file).mtime.getTime(),
+              }))
+              .sort((a, b) => a.time - b.time)
+              .map(({ name }) => name)
+          )
+    )
   );
 }
 
 export function currentImagesMap(currentFiles: string[]): Map<string, null> {
   return (
-    currentFiles?.reduce?.((all, current) => {
+    currentFiles?.reduce?.((all, current): Map<string | PathLike, null> => {
       const ext = path.extname(current);
       return ![`.png`, `.svg`, `.jpg`, `.jpeg`].includes(ext)
         ? all

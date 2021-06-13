@@ -29,26 +29,11 @@ async function startServer() {
   );
   app.use(cors(corsOptions));
 
-  app.get(`/api/images/:page?`, (req, res) =>
-    readdir(path.join(process.env.IMAGES_DIR ?? ``))
-      .then((allFiles) => {
-        const pagination = Number(req.params.page);
-        const map = currentImagesMap(allFiles);
-        const images = Array.from(map, ([current]) => current);
-        return res.send(
-          pagination && !isNaN(pagination)
-            ? images.slice((pagination - 1) * 20, pagination * 20)
-            : images
-        );
-      })
-      .catch((err) => res.status(500).send(err))
-  );
-
   app.get(`/api/image/:title`, (req, res) =>
     readdir(path.join(process.env.IMAGES_DIR ?? ``))
       .then((allFiles) => {
         const { title } = req.params;
-        const map = currentImagesMap(allFiles);
+        const map = currentImagesMap((allFiles as string[]));
         const imageExists = map.has(title);
         /**
          * RETURN HERE
