@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc:watch": "tsc -w -p tsconfig.server.json",
-    "tsc:build": "tsc -p tsconfig.server.json",
+    "tsc:watch:server": "tsc -w -p tsconfig.server.json",
+    "tsc:build:server": "tsc -p tsconfig.server.json",
+    "tsc:watch:scrapers": "tsc -p tsconfig.scrapers.json",
+    "tsc:build:scrapers": "tsc -p tsconfig.scrapers.json",
     "next:dev": "NODE_ENV=development next dev",
     "next:build": "NODE_ENV=production next build",
-    "next:export": "NODE_ENV=production next build && NODE_ENV=production next export -o ./express/html",
-    "pm2:prod": "pm2-runtime ./express/dist/server.js",
+    "next:export": "NODE_ENV=production next build && NODE_ENV=production next export -o ./html",
+    "pm2:prod": "pm2-runtime ./express/server.js",
     "generate": "graphql-codegen"
   },
   "keywords": [],

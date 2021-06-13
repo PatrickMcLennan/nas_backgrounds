@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import path from 'path';
-import { currentImagesMap, readdir } from '../../express/src/scrapers/lib';
+import { currentImagesMap, readdir } from '../../scrapers/lib';
 
 config({ path: path.resolve(__dirname, `../../.env`) });
 

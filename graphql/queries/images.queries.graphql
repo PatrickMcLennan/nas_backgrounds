@@ -1,5 +1,5 @@
 query getImages($page: Int!) {
   getImages(page: $page) {
-    title
+    name
   }
 }

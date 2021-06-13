@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
-
   type Image {
     name: String!
   }
@@ -11,6 +10,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getImages(page: ImagePagination): Image[]
+    getImages(page: ImagePagination): [Image]
   }
 `;

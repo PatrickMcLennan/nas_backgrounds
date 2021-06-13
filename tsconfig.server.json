@@ -3,8 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "express/dist",
+    "outDir": "./express",
     "noEmit": false
   },
-  "include": ["./express/src"]
+  "include": ["./server.ts"]
 }

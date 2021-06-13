@@ -8,6 +8,7 @@ ignore-list.txt
 express/dist/
 express/html/
 express/images/
+scrapers/dist/
 .next/
 @eaDir/
 Images/
