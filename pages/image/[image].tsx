@@ -1,10 +1,9 @@
 import { Card } from '@material-ui/core';
 import styled from 'styled-components';
-import { AxiosResponse } from 'axios';
 import { InferGetStaticPropsType } from 'next';
-import { browserClient } from '../../clients';
+import { nodeGraphQl } from '../../clients';
 import DocumentHead from '../../components/Head';
-import BreadCrumbs from '../../components/BreadCrumbs';
+import { gql } from 'graphql-request';
 
 type Props = {
   params: {
@@ -44,13 +43,21 @@ export default function Image({
 }
 
 export const getStaticPaths = async () =>
-  browserClient({
-    method: `GET`,
-    url: `/api/images`,
-  })
-    .then(({ data }: AxiosResponse<string[]>) => ({
-      paths: data.map((image) => ({
-        params: { image },
+  nodeGraphQl
+    .request(
+      gql`
+        query allImages {
+          allImages {
+            name
+          }
+        }
+      `
+    )
+    .then((res) => ({
+      paths: res.allImages.map((image: { name: string }) => ({
+        params: {
+          image: image.name,
+        },
       })),
       fallback: false,
     }))

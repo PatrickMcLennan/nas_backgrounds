@@ -2,6 +2,7 @@ import axios from 'axios';
 import { request, GraphQLClient } from 'graphql-request';
 import path from 'path';
 import { config } from 'dotenv';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 config({ path: path.resolve(__dirname, `./.env`) });
 
@@ -15,3 +16,8 @@ export const browserClient = axios.create({
 });
 
 export const nodeGraphQl = new GraphQLClient(`${endpoint}/api/graphql`);
+
+export const clientGraphQl = new ApolloClient({
+  uri: `${endpoint}/api/graphql`,
+  cache: new InMemoryCache(),
+});

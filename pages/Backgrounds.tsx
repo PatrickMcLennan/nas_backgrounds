@@ -30,6 +30,7 @@ export default function Index({
   const classes = useStyles();
   const [page, setPage] = useState(1);
   const router = useRouter();
+  console.log(images);
 
   if (error) console.error(error);
 

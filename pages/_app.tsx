@@ -15,6 +15,8 @@ import {
 import { useEffect, useState } from 'react';
 import BreadCrumbs from '../components/BreadCrumbs';
 import { IS_CLIENT } from '../constants';
+import { ApolloProvider } from '@apollo/client';
+import { clientGraphQl } from 'clients';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -51,27 +53,29 @@ export default function App({ Component, pageProps }): JSX.Element {
   }, []);
 
   return (
-    <StyledComponentsTheme theme={styledComponentsTheme}>
-      <MaterialUiTheme
-        theme={{
-          ...createMuiTheme({
-            ...materialUiTheme,
-            palette: {
-              type: isDark ? `dark` : `light`,
-            },
-          }),
-        }}
-      >
-        <CssBaseline />
-        <Header isDark={isDark} changeTheme={changeTheme} />
-        <Box component="main" className="main">
-          <BreadCrumbs />
-          <Box className={classes.layout}>
-            <Component {...pageProps} />
+    <ApolloProvider client={clientGraphQl}>
+      <StyledComponentsTheme theme={styledComponentsTheme}>
+        <MaterialUiTheme
+          theme={{
+            ...createMuiTheme({
+              ...materialUiTheme,
+              palette: {
+                type: isDark ? `dark` : `light`,
+              },
+            }),
+          }}
+        >
+          <CssBaseline />
+          <Header isDark={isDark} changeTheme={changeTheme} />
+          <Box component="main" className="main">
+            <BreadCrumbs />
+            <Box className={classes.layout}>
+              <Component {...pageProps} />
+            </Box>
           </Box>
-        </Box>
-        <Footer />
-      </MaterialUiTheme>
-    </StyledComponentsTheme>
+          <Footer />
+        </MaterialUiTheme>
+      </StyledComponentsTheme>
+    </ApolloProvider>
   );
 }

@@ -7,7 +7,8 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core';
-import { browserClient, nodeGraphQl } from '../clients';
+import { nodeGraphQl } from '../clients';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
 import ResponsiveImage from '../components/ResponsiveImage';
@@ -28,10 +29,16 @@ export default function Index({
   error: Error;
 }) {
   const classes = useStyles();
+  const [paginatedImages, setPaginatedImages] = useState(images);
   const [page, setPage] = useState(1);
   const router = useRouter();
 
   if (error) console.error(error);
+
+  const repaginate = () => {
+    const currentPage = page;
+    // return Promise.all();
+  };
 
   return (
     <>
@@ -39,8 +46,16 @@ export default function Index({
         title="Backgrounds"
         description="A GUI to review all scraped Backgrounds"
       />
-      {images.length ? (
-        <Grid container spacing={1}>
+      {paginatedImages.length ? (
+        <Grid
+          container
+          component={InfiniteScroll}
+          spacing={1}
+          dataLength={paginatedImages.length}
+          loader={<p>loading . . .</p>}
+          next={() => console.log(`running`)}
+          hasMore={true}
+        >
           {images.map(({ name }: { name: string }) => (
             <Grid item key={name} xs={12} sm={6} md={4}>
               <Card variant="outlined">
