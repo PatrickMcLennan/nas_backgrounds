@@ -8,16 +8,16 @@ import path from 'path';
  * You have to roll your own promise based fs solutions
  */
 
-export function readdir(path: PathLike): Promise<PathLike[]> {
+export function readdir(dirPath: PathLike): Promise<PathLike[]> {
   return new Promise((res, rej) =>
-    fs.readdir(path, (err, files) =>
+    fs.readdir(dirPath, (err, files) =>
       err
         ? rej(err)
         : res(
             files
               .map((file) => ({
                 name: file,
-                time: fs.statSync(file).mtime.getTime(),
+                time: fs.statSync(path.join((dirPath as string), file)).mtime.getTime(),
               }))
               .sort((a, b) => a.time - b.time)
               .map(({ name }) => name)
