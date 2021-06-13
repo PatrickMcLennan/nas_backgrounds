@@ -5,11 +5,7 @@ export const typeDefs = gql`
     name: String!
   }
 
-  input ImagePagination {
-    page: Int!
-  }
-
   type Query {
-    getImages(page: ImagePagination): [Image]
+    getImages(page: Int): [Image]
   }
 `;
