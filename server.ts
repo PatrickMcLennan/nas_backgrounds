@@ -1,5 +1,5 @@
 import express from 'express';
-import { currentImagesMap, readdir, unlink } from './scrapers/lib';
+import { currentImagesMap, readdir } from './scrapers/lib';
 import path from 'path';
 import fs from 'fs';
 import cors from 'cors';
@@ -17,57 +17,53 @@ const corsOptions = {
   origin: `http://localhost:3000`,
 };
 
-const app = express();
-app.use(
-  morgan(`:method :url :status :res[content-length] - :response-time ms`)
-);
-app.use(cors(corsOptions));
-
-app.get(`/api/images/:page?`, (req, res) =>
-  readdir(path.join(__dirname, `../../`))
-    .then((allFiles) => {
-      const pagination = Number(req.params.page);
-      const map = currentImagesMap(allFiles);
-      const images = Array.from(map, ([current]) => current);
-      return res.send(
-        pagination && !isNaN(pagination)
-          ? images.slice((pagination - 1) * 20, pagination * 20)
-          : images
-      );
-    })
-    .catch((err) => res.status(500).send(err))
-);
-
-app.delete(`/api/image/:title`, (req, res) =>
-  unlink(path.join(process.env.IMAGES_DIR ?? ``, `${req.params.title}`))
-    .then((images) => res.status(204).send(images))
-    .catch((err) => res.status(400).send(err))
-);
-
-app.get(`/api/image/:title`, (req, res) =>
-  readdir(process.env.IMAGES_DIR ?? ``)
-    .then((allFiles) => {
-      const { title } = req.params;
-      const map = currentImagesMap(allFiles);
-      const imageExists = map.has(title);
-      /**
-       * RETURN HERE
-       */
-      return res
-        .status(imageExists ? 200 : 404)
-        .sendFile(
-          path.resolve(__dirname, title ? `../../${title}` : `../html/404.html`)
-        );
-    })
-    .catch((err) => res.status(500).send(err))
-);
-
 async function startServer() {
   const app = express();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
   });
+
+  app.use(
+    morgan(`:method :url :status :res[content-length] - :response-time ms`)
+  );
+  app.use(cors(corsOptions));
+
+  app.get(`/api/images/:page?`, (req, res) =>
+    readdir(path.join(__dirname, `../../`))
+      .then((allFiles) => {
+        const pagination = Number(req.params.page);
+        const map = currentImagesMap(allFiles);
+        const images = Array.from(map, ([current]) => current);
+        return res.send(
+          pagination && !isNaN(pagination)
+            ? images.slice((pagination - 1) * 20, pagination * 20)
+            : images
+        );
+      })
+      .catch((err) => res.status(500).send(err))
+  );
+
+  app.get(`/api/image/:title`, (req, res) =>
+    readdir(process.env.IMAGES_DIR ?? ``)
+      .then((allFiles) => {
+        const { title } = req.params;
+        const map = currentImagesMap(allFiles);
+        const imageExists = map.has(title);
+        /**
+         * RETURN HERE
+         */
+        return res
+          .status(imageExists ? 200 : 404)
+          .sendFile(
+            path.resolve(
+              __dirname,
+              title ? `../../${title}` : `../html/404.html`
+            )
+          );
+      })
+      .catch((err) => res.status(500).send(err))
+  );
 
   app.get(`/api/image/compressed/:title/:size`, (req, res) => {
     const { title, size } = req.params;
@@ -89,8 +85,8 @@ async function startServer() {
       .status(image ? 200 : 404)
       .sendFile(
         image
-          ? path.resolve(imagePath)
-          : path.resolve(__dirname, `../html/404.html`)
+          ? path.join(imagePath)
+          : path.resolve(__dirname, `../../html/404.html`)
       );
   });
 
