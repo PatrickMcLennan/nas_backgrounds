@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import path from 'path';
 import { currentImagesMap, readdir } from '../../scrapers/lib';
 
-config({ path: path.resolve(__dirname, `../../.env`) });
+config({ path: path.resolve(__dirname, `../../../.env`) });
 
 export const imageResolvers = {
   getImages: (_: any, { page }: { page: number }) =>
