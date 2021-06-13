@@ -6,7 +6,7 @@ config({ path: path.resolve(__dirname, `../../../.env`) });
 
 export const imageResolvers = {
   getImages: (_: any, { page }: { page: number }) =>
-    readdir(path.resolve(process.env.IMAGES_DIR ?? ``)).then((allFiles) => {
+    readdir(path.join(process.env.IMAGES_DIR ?? ``)).then((allFiles) => {
       const map = currentImagesMap(allFiles);
       const images = Array.from(map, ([current]) => current);
       return images.slice((page - 1) * 20, page * 20);

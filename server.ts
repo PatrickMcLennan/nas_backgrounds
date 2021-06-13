@@ -11,7 +11,7 @@ import { typeDefs } from './graphql/typeDefs/typeDefs';
 
 import { config } from 'dotenv';
 
-config({ path: path.resolve(__dirname, `../../.env`) });
+config({ path: path.resolve(__dirname, `../.env`) });
 
 const corsOptions = {
   origin: `http://localhost:3000`,
@@ -24,7 +24,7 @@ app.use(
 app.use(cors(corsOptions));
 
 app.get(`/api/images/:page?`, (req, res) =>
-  readdir(path.resolve(__dirname, `../../`))
+  readdir(path.join(__dirname, `../../`))
     .then((allFiles) => {
       const pagination = Number(req.params.page);
       const map = currentImagesMap(allFiles);
@@ -39,13 +39,13 @@ app.get(`/api/images/:page?`, (req, res) =>
 );
 
 app.delete(`/api/image/:title`, (req, res) =>
-  unlink(path.resolve(__dirname, `../../${req.params.title}`))
+  unlink(path.join(process.env.IMAGES_DIR ?? ``, `${req.params.title}`))
     .then((images) => res.status(204).send(images))
     .catch((err) => res.status(400).send(err))
 );
 
 app.get(`/api/image/:title`, (req, res) =>
-  readdir(path.resolve(__dirname, `../../`))
+  readdir(process.env.IMAGES_DIR ?? ``))
     .then((allFiles) => {
       const { title } = req.params;
       const map = currentImagesMap(allFiles);
