@@ -17,4 +17,12 @@ exports.imageResolvers = {
             return images.slice((page - 1) * 20, page * 20);
         });
     },
+    allImages: () => {
+        var _a;
+        return lib_1.readdir(path_1.default.join((_a = process.env.IMAGES_DIR) !== null && _a !== void 0 ? _a : ``)).then(allFiles => {
+            const map = lib_1.currentImagesMap(allFiles);
+            const images = Array.from(map, ([current]) => ({ name: current }));
+            return images;
+        });
+    }
 };

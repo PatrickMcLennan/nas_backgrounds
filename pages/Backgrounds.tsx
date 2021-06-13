@@ -90,15 +90,12 @@ export const getStaticProps = async () =>
         page: 1,
       }
     )
-    .then((res) => {
-      console.log(res);
-      return {
-        props: {
-          images: res.getImages,
-          error: null,
-        },
-      };
-    })
+    .then((res) => ({
+      props: {
+        images: res.getImages,
+        error: null,
+      },
+    }))
     .catch((error) => ({
       props: {
         images: [],

@@ -8,6 +8,7 @@ exports.typeDefs = apollo_server_express_1.gql `
   }
 
   type Query {
-    getImages(page: Int): [Image]
+    allImages: [Image]
+    getImages(page: Int!): [Image]
   }
 `;

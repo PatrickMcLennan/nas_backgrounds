@@ -6,6 +6,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getImages(page: Int): [Image]
+    allImages: [Image]
+    getImages(page: Int!): [Image]
   }
 `;

@@ -3,3 +3,9 @@ query getImages($page: Int!) {
     name
   }
 }
+
+query allImages {
+  allImages {
+    name
+  }
+}
