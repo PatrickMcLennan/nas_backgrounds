@@ -7,11 +7,12 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core';
-import { browserClient } from '../clients';
+import { browserClient, nodeGraphQl } from '../clients';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { useState } from 'react';
+import { gql } from 'graphql-request';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -23,7 +24,7 @@ export default function Index({
   images,
   error,
 }: {
-  images: string[];
+  images: { name: string }[];
   error: Error;
 }) {
   const classes = useStyles();
@@ -41,7 +42,7 @@ export default function Index({
       {images.length ? (
         <Grid container spacing={1}>
           {images.map((image) => (
-            <Grid item key={image} xs={12} sm={6} md={4}>
+            <Grid item key={image.name} xs={12} sm={6} md={4}>
               <Card variant="outlined">
                 <CardActionArea
                   aria-label={`View ${image}`}
@@ -50,7 +51,7 @@ export default function Index({
                 >
                   <ResponsiveImage
                     className={classes.img}
-                    name={image}
+                    name={image.name}
                     height={250}
                   />
                   <Box component="figcaption" p={1}>
@@ -65,7 +66,9 @@ export default function Index({
         </Grid>
       ) : (
         <>
-          <Typography variant="h2">No images were found!</Typography>
+          <Typography color="error" variant="h2">
+            No images were found!
+          </Typography>
           <Typography>
             It looks like there was an issue getting the images at build time.
           </Typography>
@@ -75,11 +78,39 @@ export default function Index({
   );
 }
 
-export async function getStaticProps() {
-  return browserClient({
-    method: `GET`,
-    url: `/api/images/1`,
-  })
+// export async function getStaticProps() {
+//   return browserClient({
+//     method: `GET`,
+//     url: `/api/images/1`,
+//   })
+//     .then((res) => ({
+//       props: {
+//         images: res.data,
+//         error: null,
+//       },
+//     }))
+//     .catch((error) => ({
+//       props: {
+//         images: [],
+//         error: JSON.parse(JSON.stringify(error)),
+//       },
+//     }));
+// }
+
+export const getStaticProps = async () =>
+  nodeGraphQl
+    .request(
+      gql`
+        query getImages($page: Int!) {
+          getImages(page: $page) {
+            name
+          }
+        }
+      `,
+      {
+        page: 1,
+      }
+    )
     .then((res) => ({
       props: {
         images: res.data,
@@ -92,4 +123,3 @@ export async function getStaticProps() {
         error: JSON.parse(JSON.stringify(error)),
       },
     }));
-}
