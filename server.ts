@@ -30,7 +30,7 @@ async function startServer() {
   app.use(cors(corsOptions));
 
   app.get(`/api/images/:page?`, (req, res) =>
-    readdir(path.join(__dirname, `../../`))
+    readdir(path.join(process.env.IMAGES_DIR ?? ``))
       .then((allFiles) => {
         const pagination = Number(req.params.page);
         const map = currentImagesMap(allFiles);
@@ -45,7 +45,7 @@ async function startServer() {
   );
 
   app.get(`/api/image/:title`, (req, res) =>
-    readdir(process.env.IMAGES_DIR ?? ``)
+    readdir(path.join(process.env.IMAGES_DIR ?? ``))
       .then((allFiles) => {
         const { title } = req.params;
         const map = currentImagesMap(allFiles);
