@@ -5,11 +5,12 @@ import { useState } from 'react';
 type Props = {
   name: string;
   height: number;
+  className?: string;
 };
 
 const IS_PROD = process.env.NODE_ENV === `production`;
 
-export default function ResponsiveImage({ name, height }: Props) {
+export default function ResponsiveImage({ name, height, className }: Props) {
   const [loading, setLoaded] = useState(true);
   const getUrl = (size) =>
     `http://${
@@ -32,16 +33,17 @@ export default function ResponsiveImage({ name, height }: Props) {
           />
         ))}
         <motion.img
-          className="img"
           onLoad={() => setLoaded(false)}
           src={getUrl(`small`)}
           alt={name}
           onError={(e) => console.error(e)}
           style={{
             height: `${height}px`,
+            width: `100%`,
             opacity: 0,
           }}
           animate={{ opacity: loading ? 0 : 1, height: loading ? 0 : height }}
+          className={className ?? `img`}
         />
       </picture>
     </div>

@@ -1,60 +1,77 @@
 import { ThemeProvider as StyledComponentsTheme } from 'styled-components';
-import { ThemeProvider as MaterialUiTheme } from '@material-ui/core/styles';
-import { createMuiTheme, PaletteType } from '@material-ui/core';
+import {
+  makeStyles,
+  Theme,
+  ThemeProvider as MaterialUiTheme,
+} from '@material-ui/core/styles';
+import { Box, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import {
-  GlobalStyles,
   materialUiTheme,
   styledComponentsTheme,
 } from '../styles/resets.styles';
-import { useState } from 'react';
-import {
-  orange,
-  lightBlue,
-  deepPurple,
-  deepOrange,
-} from '@material-ui/core/colors';
+import { useEffect, useState } from 'react';
+import BreadCrumbs from '../components/BreadCrumbs';
+import { IS_CLIENT } from '../constants';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  layout: {
+    padding: theme.spacing(0, 1),
+    [theme.breakpoints.up(`md`)]: {
+      padding: theme.spacing(0, 2.5),
+    },
+    [theme.breakpoints.up(`lg`)]: {
+      padding: `0 5%`,
+    },
+  },
+}));
 
 export default function App({ Component, pageProps }): JSX.Element {
   const [colorMode, setColorMode] = useState(`dark`);
   const isDark = colorMode === `dark`;
-  const mainPrimaryColor = isDark ? orange[500] : lightBlue[500];
-  const mainSecondaryColor = isDark ? deepOrange[900] : deepPurple[500];
+  const classes = useStyles();
 
-  const changeTheme = () =>
-    setColorMode((prevMode) => (prevMode === `light` ? `dark` : `light`));
+  const changeTheme = () => {
+    const newMode = isDark ? `light` : `dark`;
+    setColorMode(newMode);
+    if (IS_CLIENT)
+      return window.localStorage.setItem(`backgroundsColor`, newMode);
+    else return;
+  };
+
+  useEffect(() => {
+    if (IS_CLIENT) {
+      const savedColorPreference =
+        window.localStorage.getItem(`backgroundsColor`);
+      if (savedColorPreference) return setColorMode(savedColorPreference);
+      else return;
+    }
+  }, []);
 
   return (
-    <>
-      <GlobalStyles />
-      <StyledComponentsTheme theme={styledComponentsTheme}>
+    <StyledComponentsTheme theme={styledComponentsTheme}>
+      <MaterialUiTheme
+        theme={{
+          ...createMuiTheme({
+            ...materialUiTheme,
+            palette: {
+              type: isDark ? `dark` : `light`,
+            },
+          }),
+        }}
+      >
         <CssBaseline />
-        <MaterialUiTheme
-          theme={{
-            ...createMuiTheme({
-              ...materialUiTheme,
-              spacing: 5,
-              palette: {
-                type: (colorMode as PaletteType),
-                primary: {
-                  main: mainPrimaryColor,
-                },
-                secondary: {
-                  main: mainSecondaryColor,
-                },
-              },
-            }),
-          }}
-        >
-            <Header isDark={isDark} changeTheme={changeTheme} />
-            <main className="main">
-              <Component {...pageProps} />
-            </main>
-            <Footer />
-        </MaterialUiTheme>
-      </StyledComponentsTheme>
-    </>
+        <Header isDark={isDark} changeTheme={changeTheme} />
+        <Box component="main" className="main">
+          <BreadCrumbs />
+          <Box className={classes.layout}>
+            <Component {...pageProps} />
+          </Box>
+        </Box>
+        <Footer />
+      </MaterialUiTheme>
+    </StyledComponentsTheme>
   );
 }

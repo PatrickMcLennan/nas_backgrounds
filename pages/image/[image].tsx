@@ -15,7 +15,6 @@ type Props = {
 const IS_PROD = process.env.NODE_ENV === `production`;
 
 const CardStyles = styled(Card)`
-  /* height: 80vh; */
   width: 100%;
 
   img {
@@ -31,12 +30,11 @@ export default function Image({
   return (
     <>
       <DocumentHead title={image} description={`View ${image}`} image={image} />
-      <BreadCrumbs />
       <CardStyles variant="outlined" className="card">
         <img
           src={`http://${
             IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
-          }/images/${image}`}
+          }/api/image/compressed/${image}/large`}
           alt={image}
         />
         <h1 className="h1">{image}</h1>

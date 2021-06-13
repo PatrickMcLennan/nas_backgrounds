@@ -1,23 +1,20 @@
 import React from 'react';
 import NextDocument from 'next/document';
 import { ServerStyleSheet as StyledComponentSheets } from 'styled-components';
-
-/**
- * Create stylesheets from styled-components and apply
- * serverside.  This stops a brief flash of unstyled content.
- *
- * @see https://medium.com/javascript-in-plain-english/ssr-with-next-js-styled-components-and-material-ui-b1e88ac11dfa
- */
+import { ServerStyleSheets as MaterialUiComponentSheets } from '@material-ui/core/styles';
 
 export default class Document extends NextDocument {
   static async getInitialProps(ctx) {
     const styledComponentSheet = new StyledComponentSheets();
+    const materialUiSheet = new MaterialUiComponentSheets();
     const originalRenderPage = ctx.renderPage;
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            styledComponentSheet.collectStyles(<App {...props} />),
+            styledComponentSheet.collectStyles(
+              materialUiSheet.collect(<App {...props} />)
+            ),
         });
       const initialProps = await NextDocument.getInitialProps(ctx);
       return {
@@ -25,6 +22,7 @@ export default class Document extends NextDocument {
         styles: [
           <React.Fragment key="styles">
             {initialProps.styles}
+            {materialUiSheet.getStyleElement()}
             {styledComponentSheet.getStyleElement()}
           </React.Fragment>,
         ],

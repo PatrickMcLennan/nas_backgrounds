@@ -2,28 +2,22 @@ import {
   Box,
   Card,
   CardActionArea,
-  Container,
   Grid,
+  makeStyles,
+  Theme,
   Typography,
 } from '@material-ui/core';
-import styled from 'styled-components';
-import { useState } from 'react';
 import { browserClient } from '../clients';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
-import BreadCrumbs from '../components/BreadCrumbs';
 import ResponsiveImage from '../components/ResponsiveImage';
+import { useState } from 'react';
 
-const StyledContainer = styled(Container)`
-  .h2 {
-    font-size: 30px;
-  }
-
-  .img {
-    object-fit: cover;
-    width: 100%;
-  }
-`;
+const useStyles = makeStyles((theme: Theme) => ({
+  img: {
+    objectFit: `cover`,
+  },
+}));
 
 export default function Index({
   images,
@@ -32,6 +26,7 @@ export default function Index({
   images: string[];
   error: Error;
 }) {
+  const classes = useStyles();
   const [page, setPage] = useState(1);
   const router = useRouter();
 
@@ -43,38 +38,39 @@ export default function Index({
         title="Backgrounds"
         description="A GUI to review all scraped Backgrounds"
       />
-      <BreadCrumbs />
-      <StyledContainer>
-        {images.length ? (
-          <Grid container spacing={2}>
-            {images.map((image) => (
-              <Grid item key={image} xs={12} sm={6} md={4} lg={4}>
-                <Card variant="outlined">
-                  <CardActionArea
-                    aria-label={`View ${image}`}
-                    onClick={() => router.push(`/image/${image}`)}
-                    title={`View ${image}`}
-                  >
-                    <ResponsiveImage name={image} height={250} />
-                    <Box component="figcaption" p={2}>
-                      <Typography className="h2" variant="h2" noWrap>
-                        {image}
-                      </Typography>
-                    </Box>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        ) : (
-          <>
-            <Typography variant="h2">No images were found!</Typography>
-            <Typography>
-              It looks like there was an issue getting the images at build time.
-            </Typography>
-          </>
-        )}
-      </StyledContainer>
+      {images.length ? (
+        <Grid container spacing={1}>
+          {images.map((image) => (
+            <Grid item key={image} xs={12} sm={6} md={4}>
+              <Card variant="outlined">
+                <CardActionArea
+                  aria-label={`View ${image}`}
+                  onClick={() => router.push(`/image/${image}`)}
+                  title={`View ${image}`}
+                >
+                  <ResponsiveImage
+                    className={classes.img}
+                    name={image}
+                    height={250}
+                  />
+                  <Box component="figcaption" p={1}>
+                    <Typography variant="caption" noWrap>
+                      {image}
+                    </Typography>
+                  </Box>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <>
+          <Typography variant="h2">No images were found!</Typography>
+          <Typography>
+            It looks like there was an issue getting the images at build time.
+          </Typography>
+        </>
+      )}
     </>
   );
 }
