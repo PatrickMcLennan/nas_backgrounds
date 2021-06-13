@@ -63,16 +63,11 @@ app.get(`/api/image/:title`, (req, res) =>
 );
 
 async function startServer() {
+  const app = express();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
   });
-
-  await server.start();
-
-  const app = express();
-  server.applyMiddleware({ app, path: `/api/graphql` });
-  app.listen({ port: 8080 });
 
   app.get(`/api/image/compressed/:title/:size`, (req, res) => {
     const { title, size } = req.params;
@@ -107,8 +102,12 @@ async function startServer() {
     })
   );
   app.use(express.static(path.resolve(__dirname, `html`)));
+
+  await server.start();
+  server.applyMiddleware({ app, path: `/api/graphql` });
+  app.listen({ port: 8080 }, () =>
+    console.log(`App is listening on Port 8080`)
+  );
 }
 
 startServer();
-
-// app.listen(8080, () => console.log(`app is running`));

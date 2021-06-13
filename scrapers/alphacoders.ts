@@ -22,8 +22,8 @@ Promise.all([
     },
     url: `https://wall.alphacoders.com/by_resolution.php?w=3840&h=1600`,
   }),
-  getIgnoreList(path.resolve(process.env.IMAGES_DIR ?? ``, `ignore-list.txt`)),
-  readdir(path.resolve(process.env.IMAGES_DIR ?? ``)),
+  getIgnoreList(path.join(process.env.IMAGES_DIR ?? ``, `ignore-list.txt`)),
+  readdir(path.join(process.env.IMAGES_DIR ?? ``)),
 ])
   .then(
     ([pageHtml, ignoreList, currentFiles]: [
