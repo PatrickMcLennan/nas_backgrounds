@@ -22,46 +22,32 @@ const apollo_server_express_1 = require("apollo-server-express");
 const resolvers_1 = require("./graphql/resolvers/resolvers");
 const typeDefs_1 = require("./graphql/typeDefs/typeDefs");
 const dotenv_1 = require("dotenv");
-dotenv_1.config({ path: path_1.default.resolve(__dirname, `../../.env`) });
+dotenv_1.config({ path: path_1.default.resolve(__dirname, `../.env`) });
 const corsOptions = {
     origin: `http://localhost:3000`,
 };
-const app = express_1.default();
-app.use(morgan_1.default(`:method :url :status :res[content-length] - :response-time ms`));
-app.use(cors_1.default(corsOptions));
-app.get(`/api/images/:page?`, (req, res) => lib_1.readdir(path_1.default.resolve(__dirname, `../../`))
-    .then((allFiles) => {
-    const pagination = Number(req.params.page);
-    const map = lib_1.currentImagesMap(allFiles);
-    const images = Array.from(map, ([current]) => current);
-    return res.send(pagination && !isNaN(pagination)
-        ? images.slice((pagination - 1) * 20, pagination * 20)
-        : images);
-})
-    .catch((err) => res.status(500).send(err)));
-app.delete(`/api/image/:title`, (req, res) => lib_1.unlink(path_1.default.resolve(__dirname, `../../${req.params.title}`))
-    .then((images) => res.status(204).send(images))
-    .catch((err) => res.status(400).send(err)));
-app.get(`/api/image/:title`, (req, res) => lib_1.readdir(path_1.default.resolve(__dirname, `../../`))
-    .then((allFiles) => {
-    const { title } = req.params;
-    const map = lib_1.currentImagesMap(allFiles);
-    const imageExists = map.has(title);
-    return res
-        .status(imageExists ? 200 : 404)
-        .sendFile(path_1.default.resolve(__dirname, title ? `../../${title}` : `../html/404.html`));
-})
-    .catch((err) => res.status(500).send(err)));
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
+        const app = express_1.default();
         const server = new apollo_server_express_1.ApolloServer({
             typeDefs: typeDefs_1.typeDefs,
             resolvers: resolvers_1.resolvers,
         });
-        yield server.start();
-        const app = express_1.default();
-        server.applyMiddleware({ app, path: `/api/graphql` });
-        app.listen({ port: 8080 });
+        app.use(morgan_1.default(`:method :url :status :res[content-length] - :response-time ms`));
+        app.use(cors_1.default(corsOptions));
+        app.get(`/api/image/:title`, (req, res) => {
+            var _a;
+            return lib_1.readdir(path_1.default.join((_a = process.env.IMAGES_DIR) !== null && _a !== void 0 ? _a : ``))
+                .then((allFiles) => {
+                const { title } = req.params;
+                const map = lib_1.currentImagesMap(allFiles);
+                const imageExists = map.has(title);
+                return res
+                    .status(imageExists ? 200 : 404)
+                    .sendFile(path_1.default.resolve(__dirname, title ? `../../${title}` : `../html/404.html`));
+            })
+                .catch((err) => res.status(500).send(err));
+        });
         app.get(`/api/image/compressed/:title/:size`, (req, res) => {
             var _a;
             const { title, size } = req.params;
@@ -74,14 +60,17 @@ function startServer() {
             return res
                 .status(image ? 200 : 404)
                 .sendFile(image
-                ? path_1.default.resolve(imagePath)
-                : path_1.default.resolve(__dirname, `../html/404.html`));
+                ? path_1.default.join(imagePath)
+                : path_1.default.resolve(__dirname, `../../html/404.html`));
         });
         app.use(`/fonts`, express_1.default.static(path_1.default.resolve(__dirname, `../../fonts`)));
         app.use(`/images`, express_1.default.static(path_1.default.resolve(__dirname, `../../`), {
             extensions: [`html`],
         }));
         app.use(express_1.default.static(path_1.default.resolve(__dirname, `html`)));
+        yield server.start();
+        server.applyMiddleware({ app, path: `/api/graphql` });
+        app.listen({ port: 8080 }, () => console.log(`App is listening on Port 8080`));
     });
 }
 startServer();

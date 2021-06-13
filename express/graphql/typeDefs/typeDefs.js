@@ -7,11 +7,7 @@ exports.typeDefs = apollo_server_express_1.gql `
     name: String!
   }
 
-  input ImagePagination {
-    page: Int!
-  }
-
   type Query {
-    getImages(page: ImagePagination): [Image]
+    getImages(page: Int): [Image]
   }
 `;

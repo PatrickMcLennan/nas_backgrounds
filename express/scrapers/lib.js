@@ -8,7 +8,15 @@ const fs_1 = __importDefault(require("fs"));
 const https_1 = __importDefault(require("https"));
 const path_1 = __importDefault(require("path"));
 function readdir(path) {
-    return new Promise((res, rej) => fs_1.default.readdir(path, (err, files) => (err ? rej(err) : res(files))));
+    return new Promise((res, rej) => fs_1.default.readdir(path, (err, files) => err
+        ? rej(err)
+        : res(files
+            .map((file) => ({
+            name: file,
+            time: fs_1.default.statSync(file).mtime.getTime(),
+        }))
+            .sort((a, b) => a.time - b.time)
+            .map(({ name }) => name))));
 }
 exports.readdir = readdir;
 function currentImagesMap(currentFiles) {
