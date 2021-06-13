@@ -45,7 +45,7 @@ app.delete(`/api/image/:title`, (req, res) =>
 );
 
 app.get(`/api/image/:title`, (req, res) =>
-  readdir(process.env.IMAGES_DIR ?? ``))
+  readdir(process.env.IMAGES_DIR ?? ``)
     .then((allFiles) => {
       const { title } = req.params;
       const map = currentImagesMap(allFiles);
