@@ -10,6 +10,10 @@ import {
 import path from 'path';
 import parse from 'node-html-parser';
 
+import { config } from 'dotenv';
+
+config({ path: path.resolve(__dirname, `../../../.env`) });
+
 Promise.all([
   axios({
     method: `GET`,
@@ -18,8 +22,8 @@ Promise.all([
     },
     url: `https://wall.alphacoders.com/by_resolution.php?w=3840&h=1600`,
   }),
-  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
-  readdir(path.resolve(__dirname, `../../../`)),
+  getIgnoreList(path.resolve(process.env.IMAGES_DIR ?? ``, `ignore-list.txt`)),
+  readdir(path.resolve(process.env.IMAGES_DIR ?? ``)),
 ])
   .then(
     ([pageHtml, ignoreList, currentFiles]: [

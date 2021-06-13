@@ -9,6 +9,10 @@ import {
 } from './lib';
 import path from 'path';
 
+import { config } from 'dotenv';
+
+config({ path: path.resolve(__dirname, `../../../.env`) });
+
 Promise.all([
   axios({
     method: `GET`,
@@ -17,8 +21,8 @@ Promise.all([
     },
     url: `https://www.reddit.com/r/widescreenwallpaper/new/.json?count=30`,
   }),
-  getIgnoreList(path.resolve(__dirname, `../../../ignore-list.txt`)),
-  readdir(path.resolve(__dirname, `../../../`)),
+  getIgnoreList(path.resolve(process.env.IMAGES_DIR ?? ``, `ignore-list.txt`)),
+  readdir(path.resolve(process.env.IMAGES_DIR ?? ``)),
 ])
   .then(
     ([newResults, ignoreList, currentFiles]: [

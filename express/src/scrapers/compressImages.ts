@@ -5,6 +5,10 @@ import imageminPngquant from 'imagemin-pngquant';
 import path from 'path';
 import { PathLike } from 'fs';
 
+import { config } from 'dotenv';
+
+config({ path: path.resolve(__dirname, `../../../.env`) });
+
 function jpegQuality(size: string): number {
   if (size === `small`) return 50;
   if (size === `medium`) return 75;
@@ -20,8 +24,8 @@ function pngQuality(size: string): [number, number] {
 }
 
 Promise.all([
-  readdir(path.resolve(__dirname, `../../images`)),
-  readdir(path.resolve(__dirname, `../../../`)),
+  readdir(path.resolve(process.env.IMAGES_DIR ?? ``, `compressed`)),
+  readdir(path.resolve(process.env.IMAGES_DIR ?? ``)),
 ])
   .then(([minifiedImageDirs, rawImages]) => {
     const rawMap = currentImagesMap(rawImages);

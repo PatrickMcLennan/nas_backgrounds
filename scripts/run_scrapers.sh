@@ -6,7 +6,7 @@
 
 current_path=$PWD
 
-cd /var/services/homes/patrick/Backgrounds/express/dist/scrapers
+cd /var/services/homes/patrick/Images/express/dist/scrapers
 
 node ./alphacoders.js
 node ./wallhaven.js
