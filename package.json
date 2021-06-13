@@ -12,7 +12,8 @@
     "next:build": "NODE_ENV=production next build",
     "next:export": "NODE_ENV=production next build && NODE_ENV=production next export -o ./html",
     "pm2:prod": "pm2-runtime ./express/server.js",
-    "generate": "graphql-codegen"
+    "codegen:generate:dev": "graphql-codegen -r ./.env --config ./codegen.dev.yml",
+    "codegen:generate:prod": "graphql-codegen -r ./.env --config ./codegen.prod.yml"
   },
   "keywords": [],
   "author": "",

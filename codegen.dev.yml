@@ -1,0 +1,8 @@
+schema: http://${DEV_URL}/api/graphql
+documents: ./graphql/**/*.graphql
+generates:
+  ./types/generated.types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
