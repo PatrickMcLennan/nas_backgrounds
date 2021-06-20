@@ -13,7 +13,6 @@
     "next:export": "NODE_ENV=production next build && NODE_ENV=production next export -o ./html",
     "pm2:prod": "pm2-runtime ./express/server.js",
     "codegen:generate:dev": "DOTENV_CONFIG_PATH=./.env graphql-codegen -r dotenv/config --config ./codegen.dev.yml",
-    "codegen:generate": "graphql-codegen -r ./.env",
     "codegen:generate:prod": "DOTENV_CONFIG_PATH=./.env graphql-codegen -r dotenv/config --config ./codegen.prod.yml"
   },
   "keywords": [],
