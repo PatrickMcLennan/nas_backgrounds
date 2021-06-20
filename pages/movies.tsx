@@ -2,16 +2,22 @@ import { nodeGraphQl } from 'clients';
 import DocumentHead from 'components/Head';
 import { gql } from 'graphql-request';
 import { InferGetStaticPropsType } from 'next';
+import Link from 'next/link';
 
 export default function Movies({
   movies,
   error,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   console.log(movies);
+  if (error) console.error(error);
   return (
     <>
       <DocumentHead title="Movies" description="All movies" />
-      <p>movies will go here</p>
+      {movies.map(({ name, id }) => (
+        <Link href={`movie/${name}/${id}`} key={id}>
+          <a>{name}</a>
+        </Link>
+      ))}
     </>
   );
 }
@@ -21,8 +27,10 @@ export const getStaticProps = async () =>
     .request(
       gql`
         query allMovies {
-          id
-          name
+          allMovies {
+            id
+            name
+          }
         }
       `
     )
