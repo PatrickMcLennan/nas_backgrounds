@@ -1,4 +1,4 @@
-schema: http://${DEV_URL}/api/graphql
+schema: 'http://${DEV_URL}/api/graphql'
 documents: ./graphql/**/*.graphql
 generates:
   ./types/generated.types.ts:

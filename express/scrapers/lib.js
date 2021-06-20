@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeFile = exports.makeDir = exports.rename = exports.nameImage = exports.downloadImage = exports.unlink = exports.ignoredNamesMap = exports.getIgnoreList = exports.currentImagesMap = exports.readdir = void 0;
+exports.makeFile = exports.makeDir = exports.rename = exports.nameImage = exports.downloadImage = exports.unlink = exports.ignoredNamesMap = exports.getIgnoreList = exports.getFileId = exports.currentMoviesMap = exports.currentImagesMap = exports.readdir = void 0;
 const fs_1 = __importDefault(require("fs"));
 const https_1 = __importDefault(require("https"));
 const path_1 = __importDefault(require("path"));
@@ -29,6 +29,20 @@ function currentImagesMap(currentFiles) {
     }, new Map())) !== null && _b !== void 0 ? _b : new Map());
 }
 exports.currentImagesMap = currentImagesMap;
+function currentMoviesMap(currentFiles) {
+    var _a;
+    return ((_a = currentFiles === null || currentFiles === void 0 ? void 0 : currentFiles.reduce) === null || _a === void 0 ? void 0 : _a.call(currentFiles, (all, current) => {
+        const id = getFileId(current);
+        return id ? all.set(id, current) : all;
+    }, new Map()));
+}
+exports.currentMoviesMap = currentMoviesMap;
+function getFileId(fileName) {
+    const firstSplit = fileName.split(/\[/);
+    const id = firstSplit[firstSplit.length - 1].split(/\]/)[0];
+    return id;
+}
+exports.getFileId = getFileId;
 function getIgnoreList(filePath) {
     return new Promise((res, rej) => fs_1.default.readFile(filePath, `utf-8`, (err, data) => (err ? rej(err) : res(data))));
 }

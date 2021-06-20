@@ -37,6 +37,21 @@ export function currentImagesMap(currentFiles: string[]): Map<string, null> {
   );
 }
 
+export function currentMoviesMap(currentFiles: string[]): Map<string, null> {
+  return (
+    currentFiles?.reduce?.((all, current): Map<string | PathLike, null> => {
+      const id = getFileId(current);
+      return id ? all.set(id, current) : all
+    }, new Map())
+  )
+}
+
+export function getFileId(fileName: string): string {
+  const firstSplit = fileName.split(/\[/);
+      const id = firstSplit[firstSplit.length - 1].split(/\]/)[0];
+      return id
+}
+
 export function getIgnoreList(filePath: PathLike): Promise<string> {
   return new Promise((res, rej) =>
     fs.readFile(filePath, `utf-8`, (err, data) => (err ? rej(err) : res(data)))

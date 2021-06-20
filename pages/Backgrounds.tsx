@@ -4,23 +4,26 @@ import {
   CardActionArea,
   Grid,
   makeStyles,
-  Theme,
   Typography,
 } from '@material-ui/core';
 import { nodeGraphQl } from '../clients';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import DocumentHead from '../components/Head';
 import { useRouter } from 'next/router';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { useState } from 'react';
 import { gql } from 'graphql-request';
+import { useGetImagesLazyQuery } from 'types/generated.types';
+import { useLoading } from 'stores/loadingStore';
+import GridScrollLoader from '../components/GridScrollLoader';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   img: {
     objectFit: `cover`,
   },
 }));
 
-export default function Index({
+export default function Backgrounds({
   images,
   error,
 }: {
@@ -28,9 +31,33 @@ export default function Index({
   error: Error;
 }) {
   const classes = useStyles();
+  const [paginatedImages, setPaginatedImages] = useState(images);
+  const [outOfImages, setOutOfImages] = useState(false);
   const [page, setPage] = useState(1);
   const router = useRouter();
-  console.log(images);
+  const { setLoading } = useLoading(({ setLoading }) => ({ setLoading }));
+  const [getImages] = useGetImagesLazyQuery({
+    onCompleted: ({ getImages }) => {
+      if (!getImages || !getImages?.map) {
+        setOutOfImages(true);
+      } else {
+        const newImages = getImages.map((image) => ({
+          name: image?.name ?? ``,
+        }));
+        setPaginatedImages((prevImages) => [...prevImages, ...newImages]);
+        setPage((prevPage) => prevPage + 1);
+      }
+      return setLoading(false);
+    },
+    variables: {
+      page: page + 1,
+    },
+  });
+
+  const getMoreImages = () => {
+    setLoading(true);
+    return getImages();
+  };
 
   if (error) console.error(error);
 
@@ -40,9 +67,19 @@ export default function Index({
         title="Backgrounds"
         description="A GUI to review all scraped Backgrounds"
       />
-      {images.length ? (
-        <Grid container spacing={1}>
-          {images.map(({ name }: { name: string }) => (
+      {paginatedImages.length ? (
+        <Grid
+          container
+          component={InfiniteScroll}
+          id="scrollDiv"
+          spacing={1}
+          dataLength={paginatedImages.length}
+          loader={<GridScrollLoader />}
+          next={getMoreImages}
+          hasMore={!outOfImages}
+          scrollableTarget="scrollDiv"
+        >
+          {paginatedImages.map(({ name }: { name: string }) => (
             <Grid item key={name} xs={12} sm={6} md={4}>
               <Card variant="outlined">
                 <CardActionArea

@@ -1,5 +1,6 @@
 import {
   AppBar,
+  CircularProgress,
   IconButton,
   makeStyles,
   Switch,
@@ -8,6 +9,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useLoading } from 'stores/loadingStore';
+
+type Props = {
+  isDark: boolean;
+  changeTheme: () => void;
+};
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -21,12 +28,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function Header({ isDark, changeTheme }): JSX.Element {
+export default function Header({ isDark, changeTheme }: Props): JSX.Element {
   const classes = useStyles();
+  const { loading } = useLoading(({ loading }) => ({ loading }));
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
         <Typography className={classes.title}>Backgrounds</Typography>
+        {loading && <CircularProgress />}
         <Switch
           checked={isDark}
           onChange={changeTheme}

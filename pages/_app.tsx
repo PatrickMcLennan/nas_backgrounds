@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }): JSX.Element {
         >
           <CssBaseline />
           <Header isDark={isDark} changeTheme={changeTheme} />
-          <Box component="main" className="main">
+          <Box component="main" className="main" pt={6}>
             <BreadCrumbs />
             <Box className={classes.layout}>
               <Component {...pageProps} />

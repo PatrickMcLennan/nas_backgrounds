@@ -22,7 +22,7 @@ export default function BreadCrumbs() {
         </Link>
         {router?.query?.image && (
           <>
-            <Link href="/">
+            <Link href="/" passHref>
               <MaterialLink>Images</MaterialLink>
             </Link>
           </>

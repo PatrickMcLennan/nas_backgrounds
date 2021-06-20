@@ -5,8 +5,16 @@ export const typeDefs = gql`
     name: String!
   }
 
+  type Movie {
+    id: String!
+    name: String!
+  }
+
   type Query {
     allImages: [Image]
     getImages(page: Int!): [Image]
+
+    allMovies: [Movie]
+    getMovies(amount: Int!, offset: Int!): [Movie]
   }
 `;

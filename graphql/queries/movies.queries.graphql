@@ -1,0 +1,13 @@
+query getMovies($amount: Int!, $offset: Int!) {
+  getMovies(amount: $amount, offset: $offset) {
+    id
+    name
+  }
+}
+
+query allMovies {
+  allMovies {
+    id
+    name
+  }
+}

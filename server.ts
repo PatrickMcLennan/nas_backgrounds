@@ -35,9 +35,6 @@ async function startServer() {
         const { title } = req.params;
         const map = currentImagesMap((allFiles as string[]));
         const imageExists = map.has(title);
-        /**
-         * RETURN HERE
-         */
         return res
           .status(imageExists ? 200 : 404)
           .sendFile(
