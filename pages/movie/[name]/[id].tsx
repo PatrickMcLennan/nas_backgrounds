@@ -12,12 +12,12 @@ const IS_PROD = process.env.NODE_ENV === `production`;
 export default function Movie({ name, id }: Props) {
   const url = `http://${
     IS_PROD ? process.env.PROD_URL : process.env.DEV_URL
-  }/api/stream/${name}/${id}`;
+  }/api/stream/movie/${name}/${id}`;
   return (
     <>
       <p>{name}</p>
       <p>{id}</p>
-      <ReactPlayer url={url} />
+      <ReactPlayer url={url} controls volume={1} />
     </>
   );
 }
